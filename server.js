@@ -1,6 +1,6 @@
 
 //run nodemon --exec npm start
-import Fastify from "fastify";
+//import Fastify from "fastify";
 import dbConnector from "./dbConnection.js";
 //import router from './routes/router.js'
 import path from "path";
@@ -13,9 +13,11 @@ import { dirname } from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const PORT =  10000;
 
-const server = Fastify({
+const PORT =  10000;
+const host = ("RENDER" in process.env) ? `0.0.0.0` : `localhost`;
+
+const server = require('fastify')({
   logger: true
 });
 
