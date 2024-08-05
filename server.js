@@ -13,7 +13,7 @@ import { dirname } from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const PORT = process.env.PORT || 10000;
+const PORT =  10000;
 
 const server = Fastify({
   logger: true
