@@ -1,0 +1,157 @@
+<section id="mobController">
+  <nav id="controller_nav">
+    <a href="#" onclick="openthis('gallery')">Galeri</a>
+    <hr>
+    <a href="#" onclick="openthis('artists')">Sanatçılar</a>
+    <hr>
+    <a href="#" onclick="openthis('type')">Tür</a>
+    <a href="#" onclick="openthis('theme')">Tema</a>
+   <!--- <hr>
+    <a href="#" onclick="openthis('technique')">Teknik</a>
+    <a href="#" onclick="openthis('material')">Malzeme</a>
+    <a href="#" onclick="openthis('timeline')">Zaman çizelgesi</a>
+    -->
+  </nav>
+
+  <div id="artistsList"></div>
+  <div id="techniqueList"></div>
+  <div id="materialList"></div>
+  <div id="timelineList"></div>
+  <div id="typeList">
+    <a href="#" onclick="opensection('gResim')">Resim</a>
+    <a href="#" onclick="opensection('gÇizim')">Çizim</a>
+    <a href="#" onclick="opensection('gBaskı')">Baskı</a>
+    <a href="#" onclick="opensection('gHatveKaligrafi')">Hat ve Kaligrafi</a>
+    <a href="#" onclick="opensection('gKarışık medya')">Karışık medya</a>
+    <a href="#" onclick="opensection('gFotoğraf')">Fotoğraf</a>
+    <a href="#" onclick="opensection('gVideo')">Video</a>
+    <a href="#" onclick="opensection('gEnstalasyon')">Enstalasyon</a>
+    <a href="#" onclick="opensection('gDijitalsanat')">Dijital sanat</a>
+  </div>
+
+  <div id="themeList">
+    <a href="#" onclick="opensection('gDoğa')">Doğa</a>
+    <a href="#" onclick="opensection('gFigür')">Figür</a>
+    <a href="#" onclick="opensection('gKent')">Kent</a>
+    <a href="#" onclick="opensection('gMimari')">Mimari</a>
+    <a href="#" onclick="opensection('gNesne')">Nesne</a>
+    <a href="#" onclick="opensection('gPortre')">Portre</a>
+    <a href="#" onclick="opensection('gSoyut')">Soyut</a>
+    <a href="#" onclick="opensection('gTipografik')">Tipografik</a>
+    <a href="#" onclick="opensection('gÖlüdoğa')">Ölüdoğa</a>
+  </div>
+
+  <div id="slideSupercontainer">
+    <div class="wheelContainer">
+      <div class="wheel">
+        <input class="infinite" data-height="350" data-width="250" data-thickness=".15" data-fgColor="#000"
+          data-bgColor="#FFFFFF" data-displayInput="false" data-cursor=false>
+      </div>
+      <div class="wheelLabel">
+        <div class="ival">0</div>
+        <div class="idir"></div>
+      </div>
+    </div>
+    <!--<div class="slidecontainer">
+      <input
+        type="range"
+        min="1"
+        max="100"
+        value="50"
+        class="slider"
+        id="myRange"
+      />
+    </div>-->
+
+
+</section>
+<script>
+  const artists = {{{ artists }}};
+  //const techniques = {{{ techniques }}};
+</script>
+
+<script src="/js/controller.js"></script>
+<script>
+  /*const options = {
+      DOMselector: "#slideSupercontainer",
+      sliders: [
+        {
+          radius: 120,
+          min: 0,
+          max: 100,
+          step: 1,
+          initialValue: 0,
+          color: "#000",
+          displayName: "whatever"
+        }
+      ]
+  };
+  const slider = new Slider(options);
+  slider.draw();
+  */
+  //function givemeawheel(){
+  //var wheelMove = 
+  /*
+      $(".knob").knob({
+        change: function (value) {
+          //if(value<0) value=0;
+          console.log("change : " + value);
+          //callGrouper(value);
+        },
+        release: function (value) {
+          //console.log(this.$.attr('value'));
+          console.log("release : " + value);
+        },
+        cancel: function () {
+          console.log("cancel : ", this);
+        },
+        draw: function () {
+  
+          // "tron" case
+          if (this.$.data('skin') == 'tron') {
+  
+            var a = this.angle(this.cv)  // Angle
+              , sa = this.startAngle          // Previous start angle
+              , sat = this.startAngle         // Start angle
+              , ea                            // Previous end angle
+              , eat = sat + a                 // End angle
+              , r = 1;
+  
+            this.g.lineWidth = this.lineWidth;
+  
+            this.o.cursor
+              && (sat = eat - 0.3)
+              && (eat = eat + 0.3);
+  
+            if (this.o.displayPrevious) {
+              ea = this.startAngle + this.angle(this.v);
+              this.o.cursor
+                && (sa = ea - 0.3)
+                && (ea = ea + 0.3);
+              this.g.beginPath();
+              this.g.strokeStyle = this.pColor;
+              this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, sa, ea, false);
+              this.g.stroke();
+            }
+  
+            this.g.beginPath();
+            this.g.strokeStyle = r ? this.o.fgColor : this.fgColor;
+            this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, sat, eat, false);
+            this.g.stroke();
+  
+            this.g.lineWidth = 2;
+            this.g.beginPath();
+            this.g.strokeStyle = this.o.fgColor;
+            this.g.arc(this.xy, this.xy, this.radius - this.lineWidth + 1 + this.lineWidth * 2 / 3, 0, 2 * Math.PI, false);
+            this.g.stroke();
+  
+            return false;
+          }
+        }
+      });*/
+
+  // Example of infinite knob, iPod click wheel
+ 
+  /*}
+  givemeawheel();*/
+</script>

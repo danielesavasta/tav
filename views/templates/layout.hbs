@@ -1,0 +1,57 @@
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+    <script src="/js/lib/smoothscroll.min.js"></script>
+  </head>
+
+  <script>
+    smoothScroll.defaults({duration: 200}); const settings = { exhibitionMode:
+    true, editing: true, editProp: false, verbose: true, collection1: "works",
+    imageField: "id", imagePath: "/assets", imageArray: false, imageSelector:
+    false, }; const dbKeys = { works: [ {"id": "id", "name": "id", "type": "id",
+    "display": false, "editable": false}, {"id": "artist_id", "name":
+    "artist_id", "type": "text", "display": true, "editable": false}, {"id":
+    "title", "name": "title", "type": "text", "display": true, "editable":
+    false}, {"id": "date", "name": "date", "type": "date", "display": true,
+    "editable": false}, {"id": "caption", "name": "caption", "type": "text",
+    "display": true, "editable": false} ], artists: [ {"id": "id", "name": "id",
+    "type": "id", "display": true}, {"id": "name", "name": "name", "type":
+    "text", "display": true}, {"id": "birthplace", "name": "birthplace", "type":
+    "date", "display": true}, {"id": "birthyear", "name": "birthyear", "type":
+    "date", "display": true}, {"id": "deathyear", "name": "deathyear", "type":
+    "date", "display": true} ] };
+  </script>
+  <body>
+    <header>
+      <a id="logo" onclick="navToggle()">
+        <span>Taviloğlu Koleksiyonu</span>
+        <b>MENU</b>
+      </a>
+      <nav>
+        <a href="/gallery">Gallery</a>
+        <a href="/timeline">Timeline</a>
+        <a href="/gallery/artists">Artists</a>
+        <a href="/gallery/type">Type</a>
+        <a href="/groups/technique">Technique</a>
+        <a href="/gallery/material">Material</a>
+        <a href="/gallery/theme">Theme</a>
+        <div>
+          <a onclick="darkmode()">dark mode</a>
+          <div class="lang">
+            <a href="#" id="lang-toggle" class="lang__option lang__option--current">en<span class="lang__chevron">›</span></a>
+            <ul class="lang__list">
+              <li><a href="#" class="lang__option">tr</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+    </header>
+    {{{body}}}
+  </body>
+
+</html>
