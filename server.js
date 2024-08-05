@@ -13,7 +13,7 @@ import { dirname } from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-
+const PORT = process.env.PORT || 10000;
 
 const server = Fastify({
   logger: true
@@ -176,7 +176,7 @@ server.get('/comm', { websocket: true }, (connection, req) => {
 });
 
 server.ready().then(() => {
-  server.listen({ port: 3000/*, host: '192.168.137.1'*/}, (err) => {
+  server.listen({ port: PORT/*, host: '192.168.137.1'*/}, (err) => {
     if (err) throw err;
     console.log(`server listening on ${server.server.address().port}`);
   });
