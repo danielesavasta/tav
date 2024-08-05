@@ -4,7 +4,7 @@ import fastifyMongo from '@fastify/mongodb'
 
 async function dbConnector (fastify, options) {
   fastify.register(fastifyMongo, {
-    url: process.env.MONGOD_CONNECT_URI
+    url: process.env.MONGOD_CONNECT_URI || 'mongodb://0.0.0.0:27017/mtk'
   })
 }
 

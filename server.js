@@ -1,6 +1,6 @@
 
 //run nodemon --exec npm start
-//import Fastify from "fastify";
+import Fastify from "fastify";
 import dbConnector from "./dbConnection.js";
 //import router from './routes/router.js'
 import path from "path";
@@ -8,22 +8,27 @@ import fastifyView from "@fastify/view";
 import fastifyStatic from "@fastify/static";
 import handlebars from "handlebars";
 import fastifyWs from "@fastify/websocket";
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
+//import { fileURLToPath } from 'url';
+//import * as url from 'url';
+//import { dirname } from 'path';
+//import.meta.dirname  // The current module's directory name
+//import.meta.filename
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+//const __filename =  (import.meta.url);
+//const __dirname = dirname(__filename);
+//const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
+//const __filename = url.fileURLToPath(import.meta.url);
 
 const PORT =  10000;
 const host = ("RENDER" in process.env) ? `0.0.0.0` : `localhost`;
 
-const server = require('fastify')({
+const server = Fastify({
   logger: true
 });
 
 await server.register(import('@fastify/compress'), { global: true })
 server.register(fastifyStatic, {
-  root: path.join(__dirname, 'public'),
+  root: path.join(import.meta.dirname, 'public'),
   //prefix: '/',
 });
 
@@ -178,7 +183,7 @@ server.get('/comm', { websocket: true }, (connection, req) => {
 });
 
 server.ready().then(() => {
-  server.listen({ port: PORT/*, host: '192.168.137.1'*/}, (err) => {
+  server.listen({ port: PORT, host:host}, (err) => {
     if (err) throw err;
     console.log(`server listening on ${server.server.address().port}`);
   });
