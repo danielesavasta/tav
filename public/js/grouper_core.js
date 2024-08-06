@@ -625,7 +625,7 @@ function imgOver(event,id) {
       imKey = settings.imageField;
       imKey = imKey.toString();
       log(idv);
-      let container = document.getElementById("imgPreview");
+      let container = document.getElementById("artworkDescription");
 
       selectedItem = db.findIndex((item) => item._id == idv);
       log(selectedItem);
@@ -645,11 +645,11 @@ function imgOver(event,id) {
       carousel += `</div></div>`;
       let metadata = `<div class="label">`;
       let foundArtist=dba.findIndex((item) => item.id == db[selectedItem].artist_id);
-      metadata += `<p><b>${dba[foundArtist].name}</b> (`
-      if(dba[foundArtist].birthyear!=undefined&&dba[foundArtist].birthyear!=0) metadata +=`${dba[foundArtist].birthyear}`;
-      if(dba[foundArtist].deathyear!=undefined&&dba[foundArtist].deathyear!=0) metadata += ` — ${dba[foundArtist].deathyear})`;
-      else metadata += `)`;
-      metadata += `</p><h5>${db[selectedItem].title}</h5>`;
+      metadata += `<h2 rel="title">${db[selectedItem].title}</h2>`;
+      metadata += `<a rel="author"><b>${dba[foundArtist].name}</b> (`
+      if(dba[foundArtist].birthyear!=undefined&&dba[foundArtist].birthyear!=0) metadata +=`<time datetime="${dba[foundArtist].birthyear}">${dba[foundArtist].birthyear}</time>`;
+      if(dba[foundArtist].deathyear!=undefined&&dba[foundArtist].deathyear!=0) metadata += ` — <time datetime="${dba[foundArtist].deathyear}">${dba[foundArtist].deathyear}</time>)`;
+      else metadata += `)</a>`;
       if(db[selectedItem].date!=undefined) metadata += `, ${db[selectedItem].date}`;
       metadata += `<p>${db[selectedItem].type}</p>`;
       metadata += `<p>${db[selectedItem].caption}</p>`;
@@ -700,7 +700,7 @@ function populateImages(container, database, databasetwo, imKey) {
   if(!settings.exhibitionMode) {
     galleryViewContent+='<div class="tool"><input onclick="lockClick()" type="checkbox" id="galleryOverUnlocked" name="galleryOverUnlocked"><label for="galleryOverUnlocked">lock item</label> <input type="range" min="5" max="100" value="50" class="linear_slider" id="imgSize"></input></div>';
   }
-  galleryViewContent+=`<div id="imagesContainer" >${images}</div></div><div id="imgPreview"></div>`;
+  galleryViewContent+=`<div id="imagesContainer" >${images}</div></div><section id="artworkDescription"></section>`;
   galleryView.innerHTML =galleryViewContent;
   const imagesContainer = document.getElementById("imagesContainer");
   imagesContainer.onmouseover = imgOver;
@@ -768,7 +768,7 @@ function populateGroups(container, database, databasetwo, groups, imKey, fieldna
     }
   });
 
-  let galleryViewContent=`<div id="imgPreview"></div>${imagesTags}<div id="imagesSupContainer">`;
+  let galleryViewContent=`<section id="artworkDescription"></section>${imagesTags}<div id="imagesSupContainer">`;
   if(!settings.exhibitionMode) {
     galleryViewContent+='<div class="tool"><input onclick="lockClick()" type="checkbox" id="galleryOverUnlocked" name="galleryOverUnlocked"><label for="galleryOverUnlocked">lock item</label> <input type="range" min="5" max="100" value="50" class="linear_slider" id="imgSize"></input></div>';
   }
@@ -841,7 +841,7 @@ function populateImagesInGroups(container, database, databasetwo, groups, imKey,
   if(!settings.exhibitionMode) {
     galleryViewContent+='<div class="tool"><input onclick="lockClick()" type="checkbox" id="galleryOverUnlocked" name="galleryOverUnlocked"><label for="galleryOverUnlocked">lock item</label> <input type="range" min="5" max="100" value="50" class="linear_slider" id="imgSize"></input></div>';
   }
-  galleryViewContent+='<div id="imagesContainer" >' +images +'</div></div><div id="imgPreview"></div>'
+  galleryViewContent+='<div id="imagesContainer" >' +images +'</div></div><section id="artworkDescription"></section>'
   galleryView.innerHTML =galleryViewContent;
   const imagesContainer = document.getElementById("imagesContainer");
   imagesContainer.onmouseover = imgOver;
@@ -903,7 +903,7 @@ function populateArtists(container, database, databasetwo, imKey) {
   if(!settings.exhibitionMode) {
     galleryViewContent+='<div class="tool"><input onclick="lockClick()" type="checkbox" id="galleryOverUnlocked" name="galleryOverUnlocked"><label for="galleryOverUnlocked">lock item</label> <input type="range" min="5" max="100" value="50" class="linear_slider" id="imgSize"></input></div>';
   }
-  galleryViewContent+='<div id="imagesContainer" >' +images +'</div></div><div id="imgPreview"></div>'
+  galleryViewContent+='<div id="imagesContainer" >' +images +'</div></div><section id="artworkDescription"></section>'
   galleryView.innerHTML =galleryViewContent;
   const imagesContainer = document.getElementById("imagesContainer");
   imagesContainer.onmouseover = imgOver;
@@ -933,7 +933,7 @@ function populateTimeline(container, database, imKey) {
       });
       images+='</div></section>';
   });
-  let galleryViewContent='<div id="imgPreview"></div><div id="timelineSupContainer">';
+  let galleryViewContent='<section id="artworkDescription"></section><div id="timelineSupContainer">';
   if(!settings.exhibitionMode) {
     galleryViewContent+='<div class="tool"><input onclick="lockClick()" type="checkbox" id="galleryOverUnlocked" name="galleryOverUnlocked"><label for="galleryOverUnlocked">lock item</label> <input type="range" min="5" max="100" value="50" class="linear_slider" id="imgSize"></input></div>';
   }

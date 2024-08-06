@@ -3,7 +3,7 @@
   --fill:#000;
   --text: #blue;
   --textsize: 1.5rem;
-  --textlabel: 2rem;
+  --textlabel: 1.2rem;
   --tabletbg: rgb(239, 239, 239);
   --tabletbg70: rgb(239, 239, 239, 0.7);
   --tablettext: #blue;
@@ -18,11 +18,12 @@
   margin: 0;
   border: 0;
   box-sizing: border-box;
+  /* Safari 
   -webkit-user-select: none;
-  /* Safari */
   -ms-user-select: none;
-  /* IE 10 and IE 11 */
   user-select: none;
+  /* IE 10 and IE 11 
+  */
   /* Standard syntax */
   /*touch-action: manipulation;
   */
@@ -34,30 +35,35 @@
 }
 
 @font-face {
-  font-family: "gotham";
-  src: local("Gotham"), url("font/GothamSSm-Medium.otf") format("opentype");
+  font-family: "SourceSans";
+  src: local("SourceSans"), url("font/SourceSans3-VariableFont_wght.ttf") format("opentype");
   font-weight: normal;
 }
 
+
+@font-face {
+  font-family: "Alegreya";
+  src: local("Alegreya"), url("font/Alegreya-VariableFont_wght.ttf") format("opentype");
+}
 html,
 body {
-  cursor: url("cursor.svg"), auto;
+  /*cursor: url("cursor.svg"), auto;*/
   width: 100%;
   height: 100%;
   overflow: hidden;
-  font-size: 16px;
+  font-size: 12px;
   z-index: 0;
 }
 
 body {
   background-color: var(--bg);
   color: var(--text);
-  font-family: "gotham", sans-serif;
+  font-family: "SourceSans", sans-serif;
 }
 body.darkmode {
   background-color: var(--dmbg);
   color: var(--dmtext);
-  font-family: "gotham", sans-serif;
+  font-family: "SourceSans", sans-serif;
 }
 #mobileInterface {
   background-color: var(--tabletbg);
@@ -157,7 +163,7 @@ main {
   grid-template-columns: 50vw 50vw;
 }
 
-#imgPreview {
+#artworkDescription {
   grid-area: "preview";
   position: relative;
 }
@@ -381,7 +387,7 @@ main {
   font-size: 0.5em;
 }
 
-#timelineViewPage #imgPreview {
+#timelineViewPage #artworkDescription {
   display: none;
 }
 
@@ -428,23 +434,19 @@ figure:hover,
 
 .label {
   padding: 0.75em;
-}
-
-.label,
-.label h5 {
   font-size: var(--textlabel);
 }
-
+/*
 .label h5 {
   text-transform: capitalize;
   display: inline-block;
   margin: 0.5rem 0;
-}
-
+}*/
+/*
 .label p {
-  font-size: 0.6em;
+  font-size: 1em;
   margin: 0.5rem 0;
-}
+}*/
 
 .imageThumb:hover,
 figure.hover .imageThumb {
@@ -935,4 +937,11 @@ input[type="range"]:focus::-moz-range-thumb {
 }
 .is-open .lang__chevron {
   transform: rotate(270deg);
+}
+
+h2{
+  font-family: "Alegreya", serif;
+  font-size: 4em;
+  font-weight: 500;
+  line-height: 1em;
 }
