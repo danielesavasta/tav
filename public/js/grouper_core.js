@@ -5,6 +5,8 @@ var db,
   snapshot,
   selectedCol;
 var selector = [];
+const fullDir="/";
+const sDir="/";
 
 const metadataCategories = [];
 let selectedItem = 0;
@@ -20,7 +22,6 @@ var galleryOverUnlocked = true;
 var root = document.querySelector(":root");
 let scale = 2;
 let _ws = null;
-
 
 function init() {
   _ws = new WebSocket(`ws://${window.location.host}/comm`);
@@ -534,7 +535,7 @@ function datatable(container, database, keys) {
               let h = 0,
                 lenh = elem[keyvalue].length;
               while (h < lenh) {
-                td_cell.innerHTML += `<img class='chipsVal' src='"+ settings.imagePath+"/s/${elem[keyvalue][h]}.jpg'/>`;
+                td_cell.innerHTML += `<img class='chipsVal' src='"+ settings.imagePath+"${sDir}${elem[keyvalue][h]}.png'/>`;
                 h++;
               }
               break;
@@ -636,11 +637,11 @@ function imgOver(event,id) {
       let i = 0,
         len = db[selectedItem][imKey].length;
       while (i < len) {
-        carousel +=`<div id="slide-${i}"><img src="${settings.imagePath}/full/${db[selectedItem][imKey][i]}.jpg"></div>`;
+        carousel +=`<div id="slide-${i}"><img src="${settings.imagePath}${fullDir}${db[selectedItem][imKey][i]}.png"></div>`;
         i++;
       }
       }
-      else carousel +=`<div id="slide-0"><img src="${settings.imagePath}/full/${db[selectedItem][imKey]}.jpg"></div>`;
+      else carousel +=`<div id="slide-0"><img src="${settings.imagePath}${fullDir}${db[selectedItem][imKey]}.png"></div>`;
       carousel += `</div></div>`;
       let metadata = `<div class="label">`;
       let foundArtist=dba.findIndex((item) => item.id == db[selectedItem].artist_id);
@@ -947,9 +948,9 @@ function populateTimeline(container, database, imKey) {
 function prepareIMG(id, classes, src) {
   return (s =
     '<figure><img src="'+ settings.imagePath +
-    '/s/' +
+    sDir +
     src +
-    '.jpg" id="' +
+    '.png" id="' +
     id +
     '" class="' +
     classes +
