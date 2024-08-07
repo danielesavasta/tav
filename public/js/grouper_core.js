@@ -7,6 +7,8 @@ var db,
 var selector = [];
 const fullDir="/";
 const sDir="/";
+/*const alphabetTR="abcçdefgğhiıjklmnoöprsştuüvyz"*/
+const alphabetTR="ABCÇDEFGĞHİIJKLMNOÖPRSŞTUÜVYZ";
 
 const metadataCategories = [];
 let foundItemID = 0;
@@ -886,33 +888,15 @@ function populateArtists(container, database, databasetwo, imKey) {
   _.forEach(databasetwo, function(artista){
     imagesByGroups[artista.name]=_.filter(database, function(o) { return o.artist_id===artista.id });
     imagesByGroups[artista.name].id=artista.id;
-    //console.log();
-      //_.filter(database, ['artist_id': artista.id]));
-/*      _.filter(database, function(o) { 
-      log(o.artist_id);
-      if(o.artist_id===artista.id) return o 
-    });
-    /*if(database[i].artist_id==artista.id)
-          imagesByGroups[artista.name].push(database[i]);
-*/
   });
-  /*let j = 0,
-    lenj = databasetwo.length;
-  while(j<lenj) {
-    //log(groups[j]);
-    
-      let i = 0,
-      len = database.length;
-      while (i < len) {
-        if(database[i].artist_id==databasetwo[j].id)
-          imagesByGroups[databasetwo[j].name].push(database[i]);
-        i++;
-      }
-    j++;
-  }*/
-  //log(imagesByGroups);
+  let letterOrder="";
   Object.entries(imagesByGroups).forEach(([key, value]) => {
     log(key);
+    if(key[0]!=letterOrder) {
+      if(letterOrder!="") images+=`</div>`;
+      letterOrder=key[0]
+      images+=`<div id="${letterOrder}">`;
+    }
     images+=`<section class="groupA g${imagesByGroups[key].id}"><div class="groupAH"><h3>${key}</h3><h4>${imagesByGroups[key].length}</h4></div>`;
       let i = 0,
       len = value.length;
@@ -922,8 +906,13 @@ function populateArtists(container, database, databasetwo, imKey) {
       }
       images+="</section>"
   })
-  
-  let galleryViewContent='<div id="imagesSupContainer">';
+  let alphabetNav=`<div id="alphabetNav">`;
+  for (i = 0; i < alphabetTR.length; i++) {
+    let letr=alphabetTR[i];
+    alphabetNav+= `<a href="#${letr}">${letr}</a>`;
+  }
+
+  let galleryViewContent=`<div id="imagesSupContainer">${alphabetNav}</div>`;
   if(!settings.exhibitionMode) {
     galleryViewContent+='<div class="tool"><input onclick="lockClick()" type="checkbox" id="galleryOverUnlocked" name="galleryOverUnlocked"><label for="galleryOverUnlocked">lock item</label> <input type="range" min="5" max="100" value="50" class="linear_slider" id="imgSize"></input></div>';
   }
@@ -934,13 +923,7 @@ function populateArtists(container, database, databasetwo, imKey) {
 }
 
 function populateTimeline(container, database, imKey) {
-  const galleryView = createEl(
-    "section",
-    "timelineView",
-    "view",
-    "<legend id='ina'>Images not associated<legend>",
-    container
-  ); // Creating the view container
+  const galleryView = createEl("section","timelineView","view","<legend id='ina'>Images not associated<legend>",container); // Creating the view container
 
   let images = "";
     Object.keys(database).forEach(key => {
@@ -1114,3 +1097,14 @@ function navToggle(){
   var element = document.getElementsByTagName("nav");
   element[0].classList.toggle("menu");
 }*/
+
+document.addEventListener('DOMContentLoaded', function() {
+  const anchors = document.querySelectorAll('a[href^="#"]');
+  anchors.forEach(function(anchor) {
+    anchor.addEventListener('click', function(event) {
+      event.preventDefault();
+      const target = anchor.getAttribute('href').substring(1);
+      smoothScroll(target);
+    });
+  });
+});

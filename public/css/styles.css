@@ -28,6 +28,7 @@
   /*touch-action: manipulation;
   */
   touch-action: pan-x pan-y;
+  
 }
 
 :root {
@@ -190,7 +191,8 @@ main {
   vertical-align: top;
   overflow-y: scroll;
   overflow-x: hidden;
-  border-top:5px solid var(--bg)
+  border-top:5px solid var(--bg);
+  /*scroll-behavior: smooth;*/
 }
 .darkmode #imagesSupContainer{
   border-color:var(--dmbg )
@@ -336,7 +338,7 @@ border: 1px solid var(--bg);
   display: inline-block;
   vertical-align: top;
   margin: 0.25em;
-  padding-right: .5em;
+  padding: .5em .5em 0;
 }
 
 #galleryView .groupA figure {
@@ -350,25 +352,26 @@ border: 1px solid var(--bg);
   width: 2em;
   object-fit: cover;
   object-position: 50% 50%;
-  padding: 0.2em;
+  /*padding: 0.2em;*/
 }
 
 #galleryView .groupA:focus,
 #galleryView .groupA:hover,
 .selected {
   background-color: #ffcf47;
+  /*
   color: var(--bg);
   transition: all 0.2s;
-  padding: 1em;
+  */
 }
 
 
 .groupAH h3,
 .groupAH h4 {
   display: inline-block;
-  font-size: 1.5em;
+  font-size: var(--textlabel);
   margin-left: 0.5em;
-  font-weight: 400;
+  font-weight: 600;
 }
 
 /*.groupAH:hover{transform: scale(3.5);z-index: 1000;padding:0.25em}*/
@@ -376,6 +379,7 @@ border: 1px solid var(--bg);
 .groupAH {
   display: inline-block;
   margin-right: 1em;
+  vertical-align: top;
   /*background-color: #efefef;*/
 }
 
@@ -449,7 +453,7 @@ border: 1px solid var(--bg);
 figure:hover,
 #imagesContainer.hover figure.hover {
   filter: opacity(100%) !important;
-  scale: 2.5;
+  scale: 1.5;
   border: 5px solid var(--bg);
   z-index: 1000;
   margin: 0 2em;
@@ -745,11 +749,11 @@ input[type="range"]:focus::-moz-range-thumb {
 
 #controller_nav>a {
   text-align: right;
-  line-height: calc(100vh / 7);
   font-size: 3vh;
   padding: 0;
   padding-right: 1em;
   text-decoration: none;
+  line-height: calc(100vh / 7);
 }
 
 #mobController {
@@ -963,7 +967,7 @@ input[type="range"]:focus::-moz-range-thumb {
 }
 
 .lang__chevron {
-  display: inline-block;
+  /*display: inline-block;*/
   float: right;
   transform: rotate(90deg);
 }
@@ -1035,4 +1039,32 @@ dt {
 dd {
   margin-left: auto;
   width: 66%;
+}
+
+.soloView {grid-template-columns: 100vw 0;}
+.soloArtwork {grid-template-columns: 0 100vw;}
+
+#alphabetNav{
+  width: 2em;
+  position: fixed;
+  left: 35%;
+  top: 9em;
+}
+
+#alphabetNav a{
+  font: 1.1em/2em "NotoMono", monospace;
+  display: inline-block;
+  width:2em;
+  height:2em;
+  color: var(--text);
+  text-decoration: none;
+  border-radius: 1.5em;
+  vertical-align: middle;
+  text-align: center;
+  margin-top: .75em;
+  transition: all .25s;
+}
+#alphabetNav a:hover{
+background-color: var(--fill);
+color: var(--bg);
 }
