@@ -1082,7 +1082,11 @@ color: var(--bg);
   overflow-x:hidden;
   overflow-y:auto;
 }
-#about section{padding:5em;vertical-align: top;}
-#about p,#about h3{font-size: 1.6em;margin-top:0.5em;line-height: 1.5em;}
+#about section{padding:5em 7.5em;vertical-align: top;}
+#about p,#about h3{font-size: 1.6em;margin-top:0.5em;line-height: 1.5em;max-width: 65em;}
 #about h1,#about h3,#about h2{margin-top:3em}
 #about blockquote{font-style:italic;margin-top:18.5em}
+#about img{max-width:99.9%; display: inline-block; }
+#about .bookCard{display:grid;grid-template-columns: 30% 65%;grid-gap: 2em; background-color:#c8c8c8; padding:1em; margin:2em .5em .5em; font-size: .8em;}
+#about .bookCard>div{vertical-align: top;}
+#about .bookCard h3{margin:0}
