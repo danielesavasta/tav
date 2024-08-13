@@ -104,6 +104,10 @@ server.get("/timeline", async function (req, reply) {
   }
 });
 
+server.get("/about", async function (req, reply) {
+  return reply.view("views/wall/about.hbs", { title: "about"}, {layout: "views/templates/layout.hbs"});
+  });
+
 server.get("/controller", async function (req, reply) {
   try {
     const collection = server.mongo.db.collection('works')

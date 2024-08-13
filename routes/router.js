@@ -19,6 +19,7 @@ async function routes (fastify, options) {
       }
       return result
     })
+
   /*
     fastify.get('/animals/:animal', async (request, reply) => {
       const result = await collection.findOne({ animal: request.params.animal })

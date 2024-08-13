@@ -1009,7 +1009,7 @@ input[type="range"]:focus::-moz-range-thumb {
   transform: rotate(270deg);
 }
 
-h2 {
+h1,h2 {
   font-family: "Alegreya", serif;
   font-size: 4em;
   font-weight: 500;
@@ -1075,3 +1075,14 @@ dd {
 background-color: var(--fill);
 color: var(--bg);
 }
+
+#about {
+  display: grid;
+  grid-template-columns: 65vw 35vw;
+  overflow-x:hidden;
+  overflow-y:auto;
+}
+#about section{padding:5em;vertical-align: top;}
+#about p,#about h3{font-size: 1.6em;margin-top:0.5em;line-height: 1.5em;}
+#about h1,#about h3,#about h2{margin-top:3em}
+#about blockquote{font-style:italic;margin-top:18.5em}
