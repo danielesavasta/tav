@@ -6,7 +6,7 @@ var db,
   selectedCol;
 var selector = [];
 const fullDir="/";
-const sDir="/";
+const sDir="/thumbs/";
 /*const alphabetTR="abcçdefgğhiıjklmnoöprsştuüvyz"*/
 const alphabetTR="ABCÇDEFGĞHİIJKLMNOÖPRSŞTUÜVYZ";
 
@@ -192,20 +192,38 @@ function emulateImgOver(container, index){
 
 function scrollToElement(sidebarElement, targetElement) {
   // Get the current scroll position of the sidebar
-  const currentScrollTop = sidebarElement.scrollTop;
-  
+  let sidebarName, targetName;
+  if (typeof sidebarElement === "string") {
+    sidebarName = sidebarElement;
+    sidebarElement = document.querySelector(sidebarElement);
+  }
+  if (typeof targetElement === "string") {
+    targetName = targetElement;
+    targetElement = document.querySelector(targetElement);
+  }
   // Get the offset of the target element relative to the document
+  const currentScrollTop = sidebarElement.scrollTop;
   const targetOffsetTop = targetElement.getBoundingClientRect().top + window.pageYOffset;
-  
+
   // Calculate the new scroll position to bring the target element into view
-  const newScrollTop = currentScrollTop + targetOffsetTop -200;
-  log(newScrollTop)
+  const newScrollTop = currentScrollTop + targetOffsetTop - 110;
+  log("goto:" + newScrollTop + ":" + targetOffsetTop);
 
   // Animate the scroll smoothly
   sidebarElement.scrollTo({
     top: newScrollTop,
-    behavior: 'smooth'
+    behavior: "smooth",
   });
+
+  if (sidebarName!=null) {
+    const nothighlightedItems = document.querySelectorAll(sidebarName+" > div");
+    log(nothighlightedItems)
+    //sidebarElement.getElementsByClassName("div").style.opacity = "0.75";
+    nothighlightedItems.forEach((userItem) => {
+      userItem.classList.add("notHigh");
+    });
+    targetElement.classList.remove("notHigh");
+  }
 }
 
 function datatableV() {
@@ -885,16 +903,20 @@ function populateArtists(container, database, databasetwo, imKey) {
   let images = "";
   let imagesByGroups = {};
   //groups = groups.split(",");
+  //imagesByGroups[artista.name].sort(turkcesiralama);
+
   _.forEach(databasetwo, function(artista){
     imagesByGroups[artista.name]=_.filter(database, function(o) { return o.artist_id===artista.id });
     imagesByGroups[artista.name].id=artista.id;
   });
+  log(imagesByGroups)
+  /*
   let letterOrder="";
   Object.entries(imagesByGroups).forEach(([key, value]) => {
     log(key);
     if(key[0]!=letterOrder) {
       if(letterOrder!="") images+=`</div>`;
-      letterOrder=key[0]
+      letterOrder=key[0];
       images+=`<div id="${letterOrder}">`;
     }
     images+=`<section class="groupA g${imagesByGroups[key].id}"><div class="groupAH"><h3>${key}</h3><h4>${imagesByGroups[key].length}</h4></div>`;
@@ -905,18 +927,33 @@ function populateArtists(container, database, databasetwo, imKey) {
           i++;
       }
       images+="</section>"
-  })
+  })*/
   let alphabetNav=`<div id="alphabetNav">`;
   for (i = 0; i < alphabetTR.length; i++) {
     let letr=alphabetTR[i];
-    alphabetNav+= `<a href="#${letr}">${letr}</a>`;
+    log(letr);
+    images+=`<div id="${letr}">`;
+    const authorsInThisGroup=_.filter(imagesByGroups,function(works,artist){ 
+      if(artist[0] == letr) {
+      images+=`<section class="groupA g${works.id}"><div class="groupAH"><h3>${artist}</h3><h4>${imagesByGroups[artist].length}</h4></div>`;
+      _.forEach(imagesByGroups[artist], function(work){
+        images += prepareIMG(work._id,"imageThumb",work[imKey]);
+      });
+      images+=`</section>`;
+      return }});
+    //log(authorsInThisGroup);
+    /*_.forEach(authorsInThisGroup, function(works,artista){
+
+    });*/
+    images+=`</div>`;
+    alphabetNav+= `<a onclick='scrollToElement("#imagesContainer","#${letr}")'>${letr}</a>`;
   }
 
-  let galleryViewContent=`<div id="imagesSupContainer">${alphabetNav}</div>`;
+  let galleryViewContent=`<div id="imagesSupContainer">`;
   if(!settings.exhibitionMode) {
     galleryViewContent+='<div class="tool"><input onclick="lockClick()" type="checkbox" id="galleryOverUnlocked" name="galleryOverUnlocked"><label for="galleryOverUnlocked">lock item</label> <input type="range" min="5" max="100" value="50" class="linear_slider" id="imgSize"></input></div>';
   }
-  galleryViewContent+=`<div id="imagesContainer">${images}</div></div><section id="artworkDescription"></section>`;
+  galleryViewContent+=`<div id="imagesContainer">${images}</div></div>${alphabetNav}</div></div><section id="artworkDescription"></section>`;
   galleryView.innerHTML =galleryViewContent;
   const imagesContainer = document.getElementById("imagesContainer");
   imagesContainer.onmouseover = imgOver;
@@ -1089,7 +1126,7 @@ function darkmode() {
 
 document.getElementById('lang-toggle').addEventListener('click', function(e){
   e.preventDefault();
-  console.log(this.parentNode)
+  //console.log(this.parentNode)
   this.parentNode.classList.toggle('is-open');
 });
 /*
@@ -1097,7 +1134,7 @@ function navToggle(){
   var element = document.getElementsByTagName("nav");
   element[0].classList.toggle("menu");
 }*/
-
+/*
 document.addEventListener('DOMContentLoaded', function() {
   const anchors = document.querySelectorAll('a[href^="#"]');
   anchors.forEach(function(anchor) {
@@ -1107,4 +1144,20 @@ document.addEventListener('DOMContentLoaded', function() {
       smoothScroll(target);
     });
   });
-});
+});*/
+
+function turkcesiralama(a, b){
+  var atitle = a.title;
+  var btitle = b.title;
+  var alfabe = "AaBbCcÇçDdEeFfGgĞğHhIıİiJjKkLlMmNnOoÖöPpQqRrSsŞşTtUuÜüVvWwXxYyZz0123456789";
+  if (atitle.length === 0 || btitle.length === 0) {
+      return atitle.length - btitle.length;
+  }
+  for(var i=0;i<atitle.length && i<btitle.length;i++){
+      var ai = alfabe.indexOf(atitle[i]);
+      var bi = alfabe.indexOf(btitle[i]);
+      if (ai !== bi) {
+          return ai - bi;
+      }
+  }
+} 

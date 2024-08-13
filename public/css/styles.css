@@ -189,8 +189,7 @@ main {
   grid-area: "thumbs";
   height: calc(100vh - 6em);
   vertical-align: top;
-  overflow-y: scroll;
-  overflow-x: hidden;
+  overflow: hidden;
   border-top:5px solid var(--bg);
   /*scroll-behavior: smooth;*/
 }
@@ -214,18 +213,22 @@ main {
 #imagesContainer {
   display: flex;
   flex-flow: wrap;
+  height: calc(100vh - 6em);
+  overflow-y: scroll;
   /*
   align-content: space-between;*/
   /*text-align: left;
   position: relative;*/
-  padding: 2em;
-  margin-bottom: 20em;
-  margin-top: 10em;
+  padding: 5em 2em;
   justify-content: flex-end;
   /*counter-reset: items;
+  margin-bottom: 20em;
+  margin-top: 10em;
   height:200vh*/
 }
-
+.notHigh {
+  opacity: .4;
+}
 /*
 #imagesContainer::before,
 #imagesContainer::after {
@@ -373,7 +376,10 @@ border: 1px solid var(--bg);
   margin-left: 0.5em;
   font-weight: 600;
 }
-
+.groupA h4 {
+  font-size: .8em;
+  font-weight: 400;
+  }
 /*.groupAH:hover{transform: scale(3.5);z-index: 1000;padding:0.25em}*/
 
 .groupAH {
@@ -1048,7 +1054,7 @@ dd {
   width: 2em;
   position: fixed;
   left: 35%;
-  top: 9em;
+  top: 6em;
 }
 
 #alphabetNav a{
@@ -1061,8 +1067,9 @@ dd {
   border-radius: 1.5em;
   vertical-align: middle;
   text-align: center;
-  margin-top: .75em;
+  margin-top: .25em;
   transition: all .25s;
+  cursor: pointer;
 }
 #alphabetNav a:hover{
 background-color: var(--fill);
