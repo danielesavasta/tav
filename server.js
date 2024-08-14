@@ -36,7 +36,7 @@ server.register(dbConnector);
 
 server.get("/", async function (req, reply) {
   try {
-    const collection = server.mongo.db.collection('works')
+    const collection = server.mongo.db.collection('work')
     const result = await collection.find().project({id:1,title:1,artist_id:1}).toArray()
     return reply.view("views/wall/index.hbs", { title: "grouper", works:JSON.stringify(result), assets:assets }, {layout: "views/templates/layout.hbs"});
   } catch (error) {
@@ -47,9 +47,9 @@ server.get("/", async function (req, reply) {
 
 server.get("/gallery/:group", async function (req, reply) {
   try {
-    const collection = server.mongo.db.collection('works')
+    const collection = server.mongo.db.collection('work')
     const result = await collection.find().toArray()
-    const artistCollection = server.mongo.db.collection('artists')
+    const artistCollection = server.mongo.db.collection('artist')
     const artistResult = await artistCollection.find().toArray()
     const { group } = req.params;
     console.log(group);
@@ -64,9 +64,9 @@ server.get("/gallery/:group", async function (req, reply) {
 
 server.get("/gallery", async function (req, reply) {
   try {
-    const collection = server.mongo.db.collection('works')
+    const collection = server.mongo.db.collection('work')
     const result = await collection.find().toArray()
-    const artistCollection = server.mongo.db.collection('artists')
+    const artistCollection = server.mongo.db.collection('artist')
     const artistResult = await artistCollection.find().toArray()
    return reply.view("views/wall/index.hbs", { title: "grouper", works:JSON.stringify(result), assets:assets, groups:"",artists:JSON.stringify(artistResult), groups:JSON.stringify("[]") }, {layout: "views/templates/layout.hbs"});
    
@@ -78,9 +78,9 @@ server.get("/gallery", async function (req, reply) {
 
 server.get("/groups/:group", async function (req, reply) {
   try {
-    const collection = server.mongo.db.collection('works')
+    const collection = server.mongo.db.collection('work')
     const result = await collection.find().toArray()
-    const artistCollection = server.mongo.db.collection('artists')
+    const artistCollection = server.mongo.db.collection('artist')
     const artistResult = await artistCollection.find().toArray()
     const { group } = req.params;
     console.log(group);
@@ -95,7 +95,7 @@ server.get("/groups/:group", async function (req, reply) {
 
 server.get("/timeline", async function (req, reply) {
   try {
-    const collection = server.mongo.db.collection('works')
+    const collection = server.mongo.db.collection('work')
     const result = await collection.find().project({id:1,title:1,date:1}).toArray()
     return reply.view("views/wall/timeline.hbs", { title: "grouper", works:JSON.stringify(result), assets:assets}, {layout: "views/templates/layout.hbs"});
   } catch (error) {
@@ -110,8 +110,8 @@ server.get("/about", async function (req, reply) {
 
 server.get("/controller", async function (req, reply) {
   try {
-    const collection = server.mongo.db.collection('works')
-    const artistCollection = server.mongo.db.collection('artists')
+    const collection = server.mongo.db.collection('work')
+    const artistCollection = server.mongo.db.collection('artist')
     const artistResult = await artistCollection.find().toArray()
 
     var groups = await collection.distinct("technique");
@@ -171,4 +171,4 @@ function broadcast(message) {
   for(let client of server.websocketServer.clients) {
       client.send(JSON.stringify(message));
   }
-}
+}s

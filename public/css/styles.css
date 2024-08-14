@@ -91,7 +91,7 @@ header {
 }
 
 #logo {
-  background: url(../tk_logo.svg) 0 0 no-repeat;
+  background: url(../assets/tk_logo.svg) 0 0 no-repeat;
   background-position: 1em;
   width: 22em;
   padding: 0 7.5em;
@@ -125,7 +125,7 @@ header {
   height: 7em;
   /* your image height */
   width: 7em;
-  background: url(../tk_logo.svg) 0 0 no-repeat;
+  background: url(../assets/tk_logo.svg) 0 0 no-repeat;
 }
 
 nav {
@@ -152,6 +152,9 @@ nav a:hover {
   text-decoration: none;
 }
 #secondary-menu{margin-right: 22em;}
+#secondary-menu>a{
+  cursor: pointer;
+}
 main {
   width: 100vw;
   height: calc(100vh - 6em);
