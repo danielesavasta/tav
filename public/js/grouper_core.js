@@ -6,7 +6,7 @@ var db,
   selectedCol;
 var selector = [];
 const fullDir="/";
-const sDir="/thumbs/";
+const sDir="/thumbp/";
 /*const alphabetTR="abcçdefgğhiıjklmnoöprsştuüvyz"*/
 const alphabetTR="ABCÇDEFGĞHİIJKLMNOÖPRSŞTUÜVYZ";
 
@@ -532,7 +532,7 @@ function datatable(container, database, keys) {
               let h = 0,
                 lenh = elem[keyvalue].length;
               while (h < lenh) {
-                td_cell.innerHTML += `<img class='chipsVal' src='"+ settings.imagePath+"${sDir}${elem[keyvalue][h]}.png'/>`;
+                td_cell.innerHTML += `<img class='chipsVal' src='"+ settings.imagePath+"${sDir}${elem[keyvalue][h]}.webp'/>`;
                 h++;
               }
               break;
@@ -994,7 +994,7 @@ function prepareIMG(id, classes, src) {
     '<figure><img src="'+ settings.imagePath +
     sDir +
     src +
-    '.png" id="' +
+    '.webp" id="' +
     id +
     '" class="' +
     classes +
@@ -1129,11 +1129,11 @@ document.getElementById('lang-toggle').addEventListener('click', function(e){
   //console.log(this.parentNode)
   this.parentNode.classList.toggle('is-open');
 });
-/*
+
 function navToggle(){
   var element = document.getElementsByTagName("nav");
   element[0].classList.toggle("menu");
-}*/
+}
 /*
 document.addEventListener('DOMContentLoaded', function() {
   const anchors = document.querySelectorAll('a[href^="#"]');
