@@ -25,10 +25,11 @@
     "date", "display": true}, {"id": "birthyear", "name": "birthyear", "type":
     "date", "display": true}, {"id": "deathyear", "name": "deathyear", "type":
     "date", "display": true} ] };
+
   </script>
   <body>
     <header>
-      <a id="logo" onclick="navToggle()">
+      <a id="logo" href="/">
         <span>Taviloğlu Koleksiyonu</span>
       </a>
       <nav id="primary-menu">
@@ -42,7 +43,7 @@
         <a href="/gallery/theme">Theme</a>-->
       </nav>
       <nav id="secondary-menu">
-        <a onclick="darkmode()">dark mode</a>
+        <a id="modeButton" onclick="darkmode()">dark mode</a>
         <div class="lang">
           <a href="#" id="lang-toggle" class="lang__option lang__option--current">en<span class="lang__chevron">›</span></a>
           <ul class="lang__list">
@@ -54,6 +55,64 @@
 
     </header>
     {{{body}}}
-  </body>
 
+
+<footer>
+  CONTACT
+Do you have any suggestions, questions or information about this work?
+
+WRITE US
+
+PERMALINK
+
+staedelmuseum.de/go/ds/bib2472ii99a
+
+FUNDED BY
+
+LAST UPDATE
+
+31.07.2024
+
+LEGAL INFO
+
+Imprint
+Privacy
+Copyright © 2024 Städel Museum
+All rights reserved.
+DIGITAL COLLECTION
+
+Home
+Works
+Artists
+Albums
+About the digital collection
+SOCIAL MEDIA
+</footer>
+
+
+<script>
+function darkmode() {
+  //var element = document.body;
+  document.body.classList.toggle("darkmode");
+  const modeButton=document.querySelector("#modeButton");
+  if(document.body.classList.contains("darkmode"))
+    modeButton.innerHTML="light mode";
+    else
+    modeButton.innerHTML="dark mode";
+}
+
+document.getElementById('lang-toggle').addEventListener('click', function(e){
+  e.preventDefault();
+  //console.log(this.parentNode)
+  this.parentNode.classList.toggle('is-open');
+});
+
+function navToggle(){
+  var element = document.getElementsByTagName("nav");
+  element[0].classList.toggle("menu");
+}
+  
+</script>
+
+  </body>
 </html>

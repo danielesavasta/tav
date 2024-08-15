@@ -10,9 +10,12 @@
   --lightyellow: rgba(255, 254, 197, 0.572);
   --dmbg: #1e1e1e;
   --dmtext: #f0f0f0;
+  --oneocolor:#9B111E;
+  --oneocolorbright:#d50d21;
+  --mouse-x: 50%;
+  --mouse-y: 50%;
+  --footer: #474444;
 }
-
-
 * {
   padding: 0;
   margin: 0;
@@ -57,7 +60,7 @@ body {
   /*cursor: url("cursor.svg"), auto;*/
   width: 100%;
   height: 100%;
-  overflow: hidden;
+  overflow-x: hidden;
   font-size: 12px;
   z-index: 0;
 }
@@ -88,6 +91,8 @@ header {
   justify-content: space-between;
   flex-wrap: wrap;
   height: 6em;
+  position:fixed;
+  width:100vw;
 }
 
 #logo {
@@ -106,7 +111,8 @@ header {
   display: none;
 }
 .darkmode #logo {
-  background-color: var(--bg);
+  background: url(../assets/tk_logo_w.svg) 0 0 no-repeat;
+  /*background-color: var(--bg);*/
 }
 
 #logo b {
@@ -156,8 +162,9 @@ nav a:hover {
   cursor: pointer;
 }
 main {
+  padding-top:6em;
   width: 100vw;
-  height: calc(100vh - 6em);
+  height: 100vh;
 }
 
 #vis_menu_container {
@@ -1022,28 +1029,37 @@ time[aria-label="Date"]{
   display: block;
 }
 #objectData {
-  font: 0.8em/1.4em "NotoMono", monospace;
+  font: 0.9em/1.4em "NotoMono", monospace;
   letter-spacing: 0.01em;
   display: flex;
   flex-wrap: wrap;
-  /*background-color: #c8c8c8;*/
+  background-color: #fff;
   width:60em;
-  padding:2em 0;
-  margin:10em 0 0;
+  padding:2em;
+  margin:10em 0 5em;
   border-top:3px solid var(--dmbg)
 }
 #objectData dl {
   display: flex;
   flex-wrap: wrap;
-  margin:1em;
+  margin:1em 1em 5em;
   width: 66%;
+  line-height: 2.5em;
+
 }
 #objectData h4 {
   width: 33%;
+  text-transform: lowercase;
+  font-variant: small-caps;
 }
 dt {
-  color:var(--dmbg);
+
   width: 33%;
+  opacity: 0.6;
+  text-transform: lowercase;
+  font-variant: small-caps;
+  text-align: right;
+  font-size: .9em;
 }
 dd {
   margin-left: auto;
@@ -1088,8 +1104,50 @@ color: var(--bg);
 #about section{padding:5em 7.5em;vertical-align: top;}
 #about p,#about h3{font-size: 1.6em;margin-top:0.5em;line-height: 1.5em;max-width: 65em;}
 #about h1,#about h3,#about h2{margin-top:3em}
-#about blockquote{font-style:italic;margin-top:18.5em}
+#about blockquote{  font-family: "Alegreya", serif;font-size: 1.4em;
+  font-style: italic;
+  margin-top: 13.85rem; color:var(--oneocolor);
+}
 #about img{max-width:99.9%; display: inline-block; }
-#about .bookCard{display:grid;grid-template-columns: 30% 65%;grid-gap: 2em; background-color:#c8c8c8; padding:1em; margin:2em .5em .5em; font-size: .8em;}
+#about .bookCard{display:grid;grid-template-columns: 30% 65%;grid-gap: 2em; background-color:#fff; padding:4em 3em; margin:2em .5em 2em; font-size: .8em;border-radius: .5em;}
 #about .bookCard>div{vertical-align: top;}
 #about .bookCard h3{margin:0}
+.darkmode #about .bookCard{background-color:#000;}
+.darkmode #objectData{background-color:#000;}
+
+  #briefHistory{font-size:.8em;margin-left:50em;max-width: 80em;}
+#books{font-size:.8em;padding-right:10em}
+main#splashscreen{
+  background-repeat: no-repeat;
+    background-position: center;
+    background-size: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    padding: 3rem;
+    justify-content: space-between;
+    transition: all .2s;
+}
+#pageLinks{margin-left:50em}
+#splashscreen>blockquote a,#pageLinks a{
+  font-family: "Alegreya", serif;
+  font-size:4em;
+  font-style:italic;
+  color:var(--oneocolor);
+  max-width: 10em;
+  display: inline-flex;
+  text-decoration: none;
+  line-height: 1.1em;
+  transition: all 1s;
+  padding:1rem;
+}
+#splashscreen>blockquote a:hover{
+  background-color: var(--bg);
+  color: var(--oneocolorbright);
+}
+
+footer{
+  font-size:2em;
+  background-color: var(--footer);
+  color:var(--bg)
+}
