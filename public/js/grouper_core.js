@@ -243,6 +243,9 @@ function galleryV() {
   else
     populateImages(main, db, dba, settings.imageField);
   //db.sort((a,b) => a.title?.localeCompare(b.title));
+  let randomID=Math.floor((Math.random()*db.length)+1);
+  console.log("randomid: "+randomID);
+  loadCardinContainer(db[randomID]._id);
 }
 
 async function timelineV() {
@@ -609,7 +612,7 @@ function lockClick() {
 }
 
 function imgClick(event) {
-  galleryOverUnlocked = false;
+  galleryOverUnlocked =!galleryOverUnlocked;
   document.getElementById("galleryOverUnlocked").checked = true;
 }
 
@@ -618,22 +621,27 @@ function imgOver(event,id) {
     id=event.target.id;
   if ((galleryOverUnlocked)&&(id)) {
     let idv = id;
-    if (idv != "imagesContainer") {
-      imKey = settings.imageField;
-      imKey = imKey.toString();
-      log(idv);
-      let container = document.getElementById("artworkDescription");
-
-      foundItemID = db.findIndex((item) => item._id == idv);
-      //log(foundItemID);
-      let foundItem=db[foundItemID];
-      //log(foundItem);
-      let foundArtistID=dba.findIndex((item) => item.id == foundItem.artist_id);
-      let foundArtist=dba[foundArtistID];
-
-      container.innerHTML = returnCardContent(foundItem,foundArtist) //
+    if (idv != "imagesContainer" && idv.length > 2) {
+      
+      loadCardinContainer(idv);
     }
   }
+}
+
+function loadCardinContainer(id){
+  imKey = settings.imageField;
+  imKey = imKey.toString();
+  log("loadCardinContainer: "+id);
+  let container = document.getElementById("artworkDescription");
+
+  foundItemID = db.findIndex((item) => item._id == id);
+  log("foundItemID: "+foundItemID);
+  let foundItem=db[foundItemID];
+  log("foundItem: "+foundItem);
+  let foundArtistID=dba.findIndex((item) => item.id == foundItem.artist_id);
+  let foundArtist=dba[foundArtistID];
+
+  container.innerHTML = returnCardContent(foundItem,foundArtist)
 }
 
 function returnCardContent(foundItem,foundArtist){
@@ -748,7 +756,8 @@ function populateImages(container, database, databasetwo, imKey) {
   galleryView.innerHTML =galleryViewContent;
   const imagesContainer = document.getElementById("imagesContainer");
   imagesContainer.onmouseover = imgOver;
-  /*imagesContainer.onclick = imgClick;
+  imagesContainer.onclick = imgClick;
+  /*
   imagesContainer.oncontextmenu = imgRightClick;*/
 /*
   let slider = document.getElementById("imgSize");
@@ -820,6 +829,8 @@ function populateGroups(container, database, databasetwo, groups, imKey, fieldna
   galleryView.innerHTML =galleryViewContent;
   const imagesContainer = document.getElementById("imagesContainer");
   imagesContainer.onmouseover = imgOver;
+  imagesContainer.onclick = imgClick;
+
 }
 
 function hideOthersThumbs(thisClass){
@@ -889,6 +900,7 @@ function populateImagesInGroups(container, database, databasetwo, groups, imKey,
   galleryView.innerHTML =galleryViewContent;
   const imagesContainer = document.getElementById("imagesContainer");
   imagesContainer.onmouseover = imgOver;
+  imagesContainer.onclick = imgClick;
 }
 
 function populateArtists(container, database, databasetwo, imKey) {
@@ -957,6 +969,7 @@ function populateArtists(container, database, databasetwo, imKey) {
   galleryView.innerHTML =galleryViewContent;
   const imagesContainer = document.getElementById("imagesContainer");
   imagesContainer.onmouseover = imgOver;
+  imagesContainer.onclick = imgClick;
 }
 
 function populateTimeline(container, database, imKey) {
@@ -1119,21 +1132,7 @@ function log(val) {
 
 
 /* ---------------------------------- toggleShow :: toggle a show class ---------------------------------- */
-function darkmode() {
-  var element = document.body;
-  element.classList.toggle("darkmode");
-}
 
-document.getElementById('lang-toggle').addEventListener('click', function(e){
-  e.preventDefault();
-  //console.log(this.parentNode)
-  this.parentNode.classList.toggle('is-open');
-});
-
-function navToggle(){
-  var element = document.getElementsByTagName("nav");
-  element[0].classList.toggle("menu");
-}
 /*
 document.addEventListener('DOMContentLoaded', function() {
   const anchors = document.querySelectorAll('a[href^="#"]');
