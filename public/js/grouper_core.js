@@ -243,6 +243,9 @@ function galleryV() {
   else
     populateImages(main, db, dba, settings.imageField);
   //db.sort((a,b) => a.title?.localeCompare(b.title));
+  let randomID=Math.floor((Math.random()*db.length)+1);
+  console.log("randomid: "+randomID);
+  loadCardinContainer(db[randomID]._id);
 }
 
 async function timelineV() {
@@ -609,8 +612,8 @@ function lockClick() {
 }*/
 
 function imgClick(event) {
-  galleryOverUnlocked = !galleryOverUnlocked;
-  /*document.getElementById("galleryOverUnlocked").checked = true;*/
+  galleryOverUnlocked =!galleryOverUnlocked;
+  document.getElementById("galleryOverUnlocked").checked = true;
 }
 
 function imgOver(event,id) {
@@ -619,27 +622,32 @@ function imgOver(event,id) {
   log("yo:"+id)
   if ((galleryOverUnlocked)&&(id)) {
     let idv = id;
-    if (idv != "imagesContainer") {
-      imKey = settings.imageField;
-      imKey = imKey.toString();
-      log(idv);
-      let container = document.getElementById("artworkDescription");
-
-      foundItemID = db.findIndex((item) => item._id == idv);
-      //log(foundItemID);
-      let foundItem=db[foundItemID];
-      //log(foundItem);
-      let foundArtistID=dba.findIndex((item) => item.id == foundItem.artist_id);
-      let foundArtist=dba[foundArtistID];
-
-      container.innerHTML = returnCardContent(foundItem,foundArtist) //
+    if (idv != "imagesContainer" && idv.length > 2) {
+      
+      loadCardinContainer(idv);
     }
   }
 }
 
+function loadCardinContainer(id){
+  imKey = settings.imageField;
+  imKey = imKey.toString();
+  log("loadCardinContainer: "+id);
+  let container = document.getElementById("artworkDescription");
+
+  foundItemID = db.findIndex((item) => item._id == id);
+  log("foundItemID: "+foundItemID);
+  let foundItem=db[foundItemID];
+  log("foundItem: "+foundItem);
+  let foundArtistID=dba.findIndex((item) => item.id == foundItem.artist_id);
+  let foundArtist=dba[foundArtistID];
+
+  container.innerHTML = returnCardContent(foundItem,foundArtist)
+}
+
 function returnCardContent(foundItem,foundArtist){
   let carousel = '';
-  if(!settings.exhibitionMode) carousel+=`<article id="addToSelector" class="tool" onclick="addToSelector()">+</div>`;
+  //if(!settings.exhibitionMode) carousel+=`<article id="addToSelector" class="tool" onclick="addToSelector()">+</div>`;
       carousel += `<div class="imgslider"><div class="slides">`;
       if(settings.imageArray) {
       let i = 0,
@@ -654,8 +662,8 @@ function returnCardContent(foundItem,foundArtist){
       let metadata = `<div class="label">`;
 
       log(foundArtist);
-
-      metadata += `<h2 aria-label="Artwork Title">${foundItem.title_en}</h2>`;
+      let title=((lang=="tr") ? foundItem.title_tr : (foundItem.title_en==undefined) ? foundItem.title_tr : foundItem.title_en);
+      metadata += `<h2 aria-label="Artwork Title">${title}</h2>`;
       if(foundItem.date!=undefined) metadata += `<time aria-label="Date" datetime=${foundItem.date}">${foundItem.date}</time>`;
       
       metadata += `<a rel="author"><b>${foundArtist.name}</b> (`
@@ -667,31 +675,41 @@ function returnCardContent(foundItem,foundArtist){
 
       metadata += `<div id="objectData"><h4>Identification</h4><dl>
                    <dt>Inventory number</dt><dd>TK-${foundItem.id.toString().padStart(5, '0')}</dd>
-                   <dt>Title</dt><dd>${foundItem.title_en}</dd>
-                   <dt>Type</dt><dd>${foundItem.type}</dd>
+                   <dt>Title (tr)</dt><dd>${foundItem.title_tr}</dd>
+                   <dt>Title (en)</dt><dd>${foundItem.title_en}</dd>
+                   <dt>Type</dt><dd>${tag("type",foundItem.type)}</dd>
                    <dt>Date</dt><dd>${foundItem.date}</dd>
                    </dl>
                    <h4>Creator</h4><dl>
                    <dt>Artist</dt><dd>${foundArtist.name}</dd>
-                   <dt>Nationality</dt><dd>${foundArtist.birthplace}</dd>
+                   <dt>Nationality</dt><dd>${tag("birthplace",foundArtist.birthplace)}</dd>
                    <dt>Life</dt><dd>${foundArtist.birthyear} - ${foundArtist.deathyear}</dd>
                    </dl>
                    <h4>Physical Characteristics</h4><dl>
                    <dt>Material</dt><dd>${foundItem.material}</dd>
                    <dt>Technique</dt><dd>${foundItem.technique}</dd>
-                   <dt>Dimensions</dt><dd>${foundItem.dimension}</dd>
+                   <dt>Dimensions</dt><dd>${foundItem.dimensions}</dd>
                    </dl>
                    <h4>Subject</h4><dl>
                    <dt>Theme</dt><dd>${foundItem.theme}</dd>
                    </dl>
                    <h4>Acquisition</h4><dl>
-                   <dt>Date</dt><dd>${foundItem.acquisitionTime}</dd>
+                   <dt>Provenance</dt><dd>${foundItem.provenance}</dd>
+                   <dt>Date</dt><dd>${foundItem.acquisition_date}</dd>
+                   <dt>Period</dt><dd>${tag("period",foundItem.period)}</dd>
                    </dl>
                    <h4>Events</h4><dl>
-                   <dt>On show</dt><dd>${foundItem.onshow}</dd>
+                   <dt>Theme</dt><dd class="tag">${tag("extheme",foundItem.extheme)}</dd>
+                   <dt>On show</dt><dd class="tag">${tag("exhall",foundItem.exhall)}</dd>
                    </dl>
                    </div></article>`;
   return carousel + metadata;
+}
+
+function tag(label,id){
+  log("accessing tag: "+label+" > " + id+" > " +lang);
+  log(tags)
+  return tags[label][id][lang];
 }
 
 function exValue(row,item){
@@ -742,13 +760,15 @@ function populateImages(container, database, databasetwo, imKey) {
     i++;
   }
   let galleryViewContent='<div id="imagesSupContainer">';
-  if(!settings.exhibitionMode) {
+  /*if(!settings.exhibitionMode) {
     galleryViewContent+='<div class="tool"><input onclick="lockClick()" type="checkbox" id="galleryOverUnlocked" name="galleryOverUnlocked"><label for="galleryOverUnlocked">lock item</label> <input type="range" min="5" max="100" value="50" class="linear_slider" id="imgSize"></input></div>';
-  }
+  }*/
   galleryViewContent+=`<div id="imagesContainer" >${images}</div></div><section id="artworkDescription"></section>`;
   galleryView.innerHTML =galleryViewContent;
   const imagesContainer = document.getElementById("imagesContainer");
   imagesContainer.onmouseover = imgOver;
+  imagesContainer.onclick = imgClick;
+  /*
   imagesContainer.onclick = imgClick;
   /*
   imagesContainer.oncontextmenu = imgRightClick;*/
@@ -815,13 +835,15 @@ function populateGroups(container, database, databasetwo, groups, imKey, fieldna
   });
 
   let galleryViewContent=`<section id="artworkDescription"></section>${imagesTags}<div id="imagesSupContainer">`;
-  if(!settings.exhibitionMode) {
+  /*if(!settings.exhibitionMode) {
     galleryViewContent+='<div class="tool"><input onclick="lockClick()" type="checkbox" id="galleryOverUnlocked" name="galleryOverUnlocked"><label for="galleryOverUnlocked">lock item</label> <input type="range" min="5" max="100" value="50" class="linear_slider" id="imgSize"></input></div>';
-  }
+  }*/
   galleryViewContent+=`<div id="imagesContainer" >${images}</div></div>`;
   galleryView.innerHTML =galleryViewContent;
   const imagesContainer = document.getElementById("imagesContainer");
   imagesContainer.onmouseover = imgOver;
+  imagesContainer.onclick = imgClick;
+
 }
 
 function hideOthersThumbs(thisClass){
@@ -884,13 +906,14 @@ function populateImagesInGroups(container, database, databasetwo, groups, imKey,
   })
   
   let galleryViewContent='<div id="imagesSupContainer">';
-  if(!settings.exhibitionMode) {
+  /*if(!settings.exhibitionMode) {
     galleryViewContent+='<div class="tool"><input onclick="lockClick()" type="checkbox" id="galleryOverUnlocked" name="galleryOverUnlocked"><label for="galleryOverUnlocked">lock item</label> <input type="range" min="5" max="100" value="50" class="linear_slider" id="imgSize"></input></div>';
-  }
+  }*/
   galleryViewContent+=`<div id="imagesContainer">${images}</div></div><section id="artworkDescription"></section>`;
   galleryView.innerHTML =galleryViewContent;
   const imagesContainer = document.getElementById("imagesContainer");
   imagesContainer.onmouseover = imgOver;
+  imagesContainer.onclick = imgClick;
 }
 
 function populateArtists(container, database, databasetwo, imKey) {
@@ -952,13 +975,14 @@ function populateArtists(container, database, databasetwo, imKey) {
   }
 
   let galleryViewContent=`<div id="imagesSupContainer">`;
-  if(!settings.exhibitionMode) {
+  /*if(!settings.exhibitionMode) {
     galleryViewContent+='<div class="tool"><input onclick="lockClick()" type="checkbox" id="galleryOverUnlocked" name="galleryOverUnlocked"><label for="galleryOverUnlocked">lock item</label> <input type="range" min="5" max="100" value="50" class="linear_slider" id="imgSize"></input></div>';
-  }
+  }*/
   galleryViewContent+=`<div id="imagesContainer">${images}</div></div>${alphabetNav}</div></div><section id="artworkDescription"></section>`;
   galleryView.innerHTML =galleryViewContent;
   const imagesContainer = document.getElementById("imagesContainer");
   imagesContainer.onmouseover = imgOver;
+  imagesContainer.onclick = imgClick;
 }
 
 function populateTimeline(container, database, imKey) {
@@ -980,9 +1004,9 @@ function populateTimeline(container, database, imKey) {
       images+='</div></section>';
   });
   let galleryViewContent='<section id="artworkDescription"></section><div id="timelineSupContainer">';
-  if(!settings.exhibitionMode) {
+  /*if(!settings.exhibitionMode) {
     galleryViewContent+='<div class="tool"><input onclick="lockClick()" type="checkbox" id="galleryOverUnlocked" name="galleryOverUnlocked"><label for="galleryOverUnlocked">lock item</label> <input type="range" min="5" max="100" value="50" class="linear_slider" id="imgSize"></input></div>';
-  }
+  }*/
   galleryViewContent+=`<div id="timelineContainer">${images}</div></div>`;
   galleryView.innerHTML =galleryViewContent;
   const imagesContainer = document.getElementById("timelineContainer");
@@ -1121,21 +1145,7 @@ function log(val) {
 
 
 /* ---------------------------------- toggleShow :: toggle a show class ---------------------------------- */
-function darkmode() {
-  var element = document.body;
-  element.classList.toggle("darkmode");
-}
 
-document.getElementById('lang-toggle').addEventListener('click', function(e){
-  e.preventDefault();
-  //console.log(this.parentNode)
-  this.parentNode.classList.toggle('is-open');
-});
-
-function navToggle(){
-  var element = document.getElementsByTagName("nav");
-  element[0].classList.toggle("menu");
-}
 /*
 document.addEventListener('DOMContentLoaded', function() {
   const anchors = document.querySelectorAll('a[href^="#"]');
