@@ -6,6 +6,7 @@ import fastifyView from "@fastify/view";
 import fastifyStatic from "@fastify/static";
 import handlebars from "handlebars";
 import fastifyWs from "@fastify/websocket";
+import fastifyEnv from "@fastify/env";
 
 const PORT =  10000;
 const host = ("RENDER" in process.env) ? `0.0.0.0` : `localhost`;
@@ -14,6 +15,13 @@ const assets = 'https://taviloglukoleksiyon.org/eserler';
 const server = Fastify({
   logger: true
 });
+
+const options = {
+  dotenv: true,
+  data: process.env
+}
+Fastify.register(fastifyPlugin(fastifyEnv,options));
+await fastify.after()
 
 await server.register(import('@fastify/compress'), { global: true })
 server.register(fastifyStatic, {
@@ -107,7 +115,8 @@ server.get("/timeline", async function (req, reply) {
 server.get("/about", async function (req, reply) {
   return reply.view("views/wall/about.hbs", { title: "about"}, {layout: "views/templates/layout.hbs"});
   });
-
+  
+/*
 server.get("/controller", async function (req, reply) {
   try {
     const collection = server.mongo.db.collection('work')
@@ -167,8 +176,9 @@ server.ready().then(() => {
   });
 });
 
+
 function broadcast(message) {
   for(let client of server.websocketServer.clients) {
       client.send(JSON.stringify(message));
   }
-}
+}*/

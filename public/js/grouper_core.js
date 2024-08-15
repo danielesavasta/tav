@@ -5,7 +5,7 @@ var db,
   snapshot,
   selectedCol;
 var selector = [];
-const fullDir="/";
+const fullDir="/full/";
 const sDir="/thumbp/";
 /*const alphabetTR="abcçdefgğhiıjklmnoöprsştuüvyz"*/
 const alphabetTR="ABCÇDEFGĞHİIJKLMNOÖPRSŞTUÜVYZ";
@@ -602,20 +602,21 @@ function sortByTh() {
   let e = document.getElementById("th_" + selectedCol).cellIndex;
   sortGrid(e);
 }
-
+/*
 function lockClick() {
   galleryOverUnlocked = true;
   log("yes");
-}
+}*/
 
 function imgClick(event) {
-  galleryOverUnlocked = false;
-  document.getElementById("galleryOverUnlocked").checked = true;
+  galleryOverUnlocked = !galleryOverUnlocked;
+  /*document.getElementById("galleryOverUnlocked").checked = true;*/
 }
 
 function imgOver(event,id) {
   if(id==undefined)
     id=event.target.id;
+  log("yo:"+id)
   if ((galleryOverUnlocked)&&(id)) {
     let idv = id;
     if (idv != "imagesContainer") {
@@ -644,17 +645,17 @@ function returnCardContent(foundItem,foundArtist){
       let i = 0,
         len = foundItem[imKey].length;
       while (i < len) {
-        carousel +=`<div id="slide-${i}"><img src="${settings.imagePath}${fullDir}${foundItem[imKey][i]}.png"></div>`;
+        carousel +=`<div id="slide-${i}"><img src="${settings.imagePath}${fullDir}${foundItem[imKey][i]}.webp"></div>`;
         i++;
       }
       }
-      else carousel +=`<div id="slide-0"><img src="${settings.imagePath}${fullDir}${foundItem[imKey]}.png"></div>`;
+      else carousel +=`<div id="slide-0"><img src="${settings.imagePath}${fullDir}${foundItem[imKey]}.webp"></div>`;
       carousel += `</div></div>`;
       let metadata = `<div class="label">`;
 
       log(foundArtist);
 
-      metadata += `<h2 aria-label="Artwork Title">${foundItem.title}</h2>`;
+      metadata += `<h2 aria-label="Artwork Title">${foundItem.title_en}</h2>`;
       if(foundItem.date!=undefined) metadata += `<time aria-label="Date" datetime=${foundItem.date}">${foundItem.date}</time>`;
       
       metadata += `<a rel="author"><b>${foundArtist.name}</b> (`
@@ -666,7 +667,7 @@ function returnCardContent(foundItem,foundArtist){
 
       metadata += `<div id="objectData"><h4>Identification</h4><dl>
                    <dt>Inventory number</dt><dd>TK-${foundItem.id.toString().padStart(5, '0')}</dd>
-                   <dt>Title</dt><dd>${foundItem.title}</dd>
+                   <dt>Title</dt><dd>${foundItem.title_en}</dd>
                    <dt>Type</dt><dd>${foundItem.type}</dd>
                    <dt>Date</dt><dd>${foundItem.date}</dd>
                    </dl>
@@ -748,7 +749,8 @@ function populateImages(container, database, databasetwo, imKey) {
   galleryView.innerHTML =galleryViewContent;
   const imagesContainer = document.getElementById("imagesContainer");
   imagesContainer.onmouseover = imgOver;
-  /*imagesContainer.onclick = imgClick;
+  imagesContainer.onclick = imgClick;
+  /*
   imagesContainer.oncontextmenu = imgRightClick;*/
 /*
   let slider = document.getElementById("imgSize");
@@ -1161,3 +1163,12 @@ function turkcesiralama(a, b){
       }
   }
 } 
+
+function opensearch(){
+  document.getElementById("searchbox").style.display = "block";
+}
+
+// Close the full screen search box
+function closeSearch() {
+  document.getElementById("searchbox").style.display = "none";
+}

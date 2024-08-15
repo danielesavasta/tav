@@ -33,9 +33,12 @@
       </a>
       <nav id="primary-menu">
         <a href="/about">About the Collection</a>
+        |
         <a href="/gallery">Gallery</a>
         <a href="/gallery/artists">Artists</a>
         <a href="/gallery/type">Type</a>
+        |
+        <a onclick="opensearch()" class="searchButton">Search</a>
         <!--<a href="/timeline">Timeline</a>
         <a href="/groups/technique">Technique</a>
         <a href="/gallery/material">Material</a>
@@ -54,6 +57,15 @@
 
     </header>
     {{{body}}}
+    <div id="searchbox" class="overlay">
+        <span class="closebtn" onclick="closeSearch()" title="Close Searchbox">x</span>
+  <div class="searchbox-content">
+       <form>
+      <input type="text" placeholder="Search..." name="search">
+      <button type="submit"></button>
+    </form>
+    </div>
+    </div>
   </body>
 
 </html>
