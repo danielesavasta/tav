@@ -139,7 +139,7 @@ nav {
   line-height: 6em;
 }
 
-nav a {
+nav a, #readmore {
   background-color: var(--bg);
   color: var(--fill);
   padding: 0.5em;
@@ -151,8 +151,11 @@ nav a {
   letter-spacing: 0.05em;
   text-decoration: none;
 }
-
-nav a:hover {
+#readmore {
+float: right;
+    margin: 5em;
+}
+nav a:hover, #readmore:hover {
   background-color: #000;
   color: #efefef;
   text-decoration: none;
@@ -263,6 +266,7 @@ border: 1px solid var(--bg);
 }
 .groupS {
   width: 33%;
+  padding:.5em;
   margin-bottom: 2em;
   position: relative;
   /*display: inline-block;
@@ -340,11 +344,12 @@ border: 1px solid var(--bg);
 }
 
 .groupH h4 {
-  margin-left: 2em;
+  margin-right: .5em;
 }
 
 .groupH {
-  display: block;
+  display: flex;
+  justify-content: space-between;
 }
 
 .groupA {
@@ -1213,4 +1218,9 @@ footer{
   font-size:2em;
   background-color: var(--footer);
   color:var(--bg)
+}
+
+#shownwork a{
+  color:inherit;
+  text-decoration: none;
 }

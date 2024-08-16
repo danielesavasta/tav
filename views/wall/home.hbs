@@ -22,8 +22,10 @@
     const shownwork=document.querySelector("#shownwork");
     const url=`url("${assets}/full/${work.id}.webp`;
     console.log(work);
+    console.log(artist);
     bg.style.backgroundImage=url;
-    shownwork.innerHTML=`<a href="/work/${work.id}"><h2>${work.title_tr}</h2><p>${artist.name}</p></a>`;
+    let title=((lang=="tr") ? work.title_tr : (work.title_en==undefined) ? work.title_tr : work.title_en);
+    shownwork.innerHTML=`<a href="/work/${work.id}"><h2>${title}</h2><p>${artist.name}</p></a>`;
 
     
   }
@@ -32,7 +34,7 @@ const bg=document.querySelector("#splashscreen");
     let x = parseInt(pos.clientX / window.innerWidth * 100);
     let y = parseInt(pos.clientY / window.innerHeight * 100);
     let position=(50+(x-50)*.1)+"% "+(50+(y-50)*.1)+"%";
-    console.log(position);
+    
     bg.style.backgroundPosition=position;
 
 });

@@ -189,8 +189,12 @@ function emulateImgOver(container, index){
   scrollToElement(container.parentElement,elIndex)
 }
 
+function scrollToLetter(sidebarElement, targetElement) {
+  scrollToElement(sidebarElement, targetElement,true);
+  
+}
 
-function scrollToElement(sidebarElement, targetElement) {
+function scrollToElement(sidebarElement, targetElement, isLetter) {
   // Get the current scroll position of the sidebar
   let sidebarName, targetName;
   if (typeof sidebarElement === "string") {
@@ -214,16 +218,16 @@ function scrollToElement(sidebarElement, targetElement) {
     top: newScrollTop,
     behavior: "smooth",
   });
-
-  if (sidebarName!=null) {
+  if ((sidebarName!=null)&&(isLetter)) {
     const nothighlightedItems = document.querySelectorAll(sidebarName+" > div");
-    log(nothighlightedItems)
+    //log(nothighlightedItems)
     //sidebarElement.getElementsByClassName("div").style.opacity = "0.75";
     nothighlightedItems.forEach((userItem) => {
       userItem.classList.add("notHigh");
     });
     targetElement.classList.remove("notHigh");
   }
+  
 }
 
 function datatableV() {
@@ -673,7 +677,7 @@ function returnCardContent(foundItem,foundArtist){
       else metadata += `)</a>`;
 
 
-      metadata += `<div id="objectData"><h4>Identification</h4><dl>
+      metadata += `<a onclick='scrollToElement("#artworkDescription","#objectData")' id="readmore">View Full Work Details</a><div id="objectData"><h4>Identification</h4><dl>
                    <dt>Inventory number</dt><dd>TK-${foundItem.id.toString().padStart(5, '0')}</dd>
                    <dt>Title (tr)</dt><dd>${foundItem.title_tr}</dd>
                    <dt>Title (en)</dt><dd>${foundItem.title_en}</dd>
@@ -870,7 +874,7 @@ function populateImagesInGroups(container, database, databasetwo, groups, imKey,
   let images = "";
   let imagesByGroups = {};
   //groups = groups.split(",");
-
+  log(fieldname);
   let j = 0,
     lenj = groups.length;
   while(j<lenj) {
@@ -895,7 +899,7 @@ function populateImagesInGroups(container, database, databasetwo, groups, imKey,
     if((key!=undefined)&&(key!="false")) {
       keyTrim=key.replace(/\s/g, "");
     //log("this is key "+keyTrim);
-    images+=`<section class="groupS g${keyTrim}"><div class="groupH"><h3>${key}</h3><h4>${imagesByGroups[keyTrim].length}</h4></div>`;
+    images+=`<section class="groupS g${keyTrim}"><div class="groupH"><h3>${tag(fieldname,key)}</h3><h4>${imagesByGroups[keyTrim].length}</h4></div>`;
       let i = 0,
       len = value.length;
       while (i < len) {
@@ -971,7 +975,7 @@ function populateArtists(container, database, databasetwo, imKey) {
 
     });*/
     images+=`</div>`;
-    alphabetNav+= `<a onclick='scrollToElement("#imagesContainer","#${letr}")'>${letr}</a>`;
+    alphabetNav+= `<a onclick='scrollToLetter("#imagesContainer","#${letr}")'>${letr}</a>`;
   }
 
   let galleryViewContent=`<div id="imagesSupContainer">`;
