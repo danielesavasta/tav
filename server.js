@@ -45,7 +45,7 @@ server.get("/", async function (req, reply) {
     const artistCollection = server.mongo.db.collection(dbArtists)
     const artistResult = await artistCollection.findOne({'id':result[0].artist_id})
     
-    return reply.view("views/wall/home.hbs", { title: "grouper", work:JSON.stringify(result), artist:JSON.stringify(artistResult), assets:assets }, {layout: "views/templates/layout.hbs"});
+    return reply.view("views/wall/home.hbs", { title: "grouper", bodyClass: "home",work:JSON.stringify(result), artist:JSON.stringify(artistResult), assets:assets }, {layout: "views/templates/layout.hbs"});
   } catch (error) {
     console.log(error);
     return "Error Found";
@@ -60,7 +60,7 @@ server.get("/gallery/:group", async function (req, reply) {
     const { group } = req.params;
     console.log(group);
     const grouplist = await collection.distinct(group);
-    return reply.view("views/wall/index.hbs", { title: "grouper", works:JSON.stringify(result), assets:assets, groups:"",artists:JSON.stringify(artistResult), groupsfieldname: group, groups:JSON.stringify(grouplist) }, {layout: "views/templates/layout.hbs"});
+    return reply.view("views/wall/index.hbs", { title: "grouper", bodyClass: "galleryGroup"+group, works:JSON.stringify(result), assets:assets, groups:"",artists:JSON.stringify(artistResult), groupsfieldname: group, groups:JSON.stringify(grouplist) }, {layout: "views/templates/layout.hbs"});
   } catch (error) {
     console.log(error);
     return "Error Found";
@@ -72,7 +72,7 @@ server.get("/gallery", async function (req, reply) {
     const result = await collection.find().toArray()
     const artistCollection = server.mongo.db.collection(dbArtists)
     const artistResult = await artistCollection.find().toArray()
-   return reply.view("views/wall/index.hbs", { title: "grouper", works:JSON.stringify(result), assets:assets, groups:"",artists:JSON.stringify(artistResult), groups:JSON.stringify("[]") }, {layout: "views/templates/layout.hbs"});
+   return reply.view("views/wall/index.hbs", { title: "grouper", bodyClass: "gallery", works:JSON.stringify(result), assets:assets, groups:"",artists:JSON.stringify(artistResult), groups:JSON.stringify("[]") }, {layout: "views/templates/layout.hbs"});
    
   } catch (error) {
     console.log(error);
@@ -88,7 +88,7 @@ server.get("/groups/:group", async function (req, reply) {
     const { group } = req.params;
     console.log(group);
     const grouplist = await collection.distinct(group);
-    return reply.view("views/wall/groups.hbs", { title: "grouper", works:JSON.stringify(result), assets:assets,groups:"",artists:JSON.stringify(artistResult), groupsfieldname: group, groups:JSON.stringify(grouplist) }, {layout: "views/templates/layout.hbs"});
+    return reply.view("views/wall/groups.hbs", { title: "grouper", bodyClass: "group"+group, works:JSON.stringify(result), assets:assets,groups:"",artists:JSON.stringify(artistResult), groupsfieldname: group, groups:JSON.stringify(grouplist) }, {layout: "views/templates/layout.hbs"});
   } catch (error) {
     console.log(error);
     return "Error Found";
@@ -98,15 +98,15 @@ server.get("/timeline", async function (req, reply) {
   try {
     const collection = server.mongo.db.collection(dbWorks)
     const result = await collection.find().project({id:1,title:1,date:1}).toArray()
-    return reply.view("views/wall/timeline.hbs", { title: "grouper", works:JSON.stringify(result), assets:assets}, {layout: "views/templates/layout.hbs"});
+    return reply.view("views/wall/timeline.hbs", { title: "grouper", bodyClass: "group", works:JSON.stringify(result), assets:assets}, {layout: "views/templates/layout.hbs"});
   } catch (error) {
     console.log(error);
     return "Error Found";
   }
 });
-server.get("/about", async function (req, reply) {
+/*server.get("/about", async function (req, reply) {
   return reply.view("views/wall/about.hbs", { title: "about"}, {layout: "views/templates/layout.hbs"});
-  });
+  });*/
   /*
 server.get("/controller", async function (req, reply) {
   try {

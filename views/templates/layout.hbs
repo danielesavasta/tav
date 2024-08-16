@@ -169,13 +169,13 @@ period: {
    "display": true
           } ] };*/
   </script>
-  <body>
+  <body class="darkmode {{{bodyClass}}}">
     <header>
-      <a id="logo" href="/">
+      <a id="logo" href="https://taviloglukoleksiyon.org/tk/">
         <span>Taviloğlu Koleksiyonu</span>
       </a>
       <nav id="primary-menu">
-        <a href="/about">About the Collection</a>
+        <a href="https://taviloglukoleksiyon.org/tk/">About the Collection</a>
         |
         <a href="/gallery">Gallery</a>
         <a href="/gallery/artists">Artists</a>
@@ -188,14 +188,14 @@ period: {
         <a href="/gallery/theme">Theme</a>-->
       </nav>
       <nav id="secondary-menu">
-        <a id="modeButton" onclick="darkmode()">dark mode</a>
+        <a id="modeButton" onclick="darkmode()">light mode</a>
         <div class="lang">
           <a href="#" id="lang-toggle" class="lang__option lang__option--current">en<span class="lang__chevron">›</span></a>
           <ul class="lang__list">
             <li><a href="#" class="lang__option">tr</a></li>
           </ul>
         </div>
-        <a href="/login">login</a>
+        <!-- <a href="/login">login</a> -->
       </nav>
 
     </header>
@@ -212,35 +212,16 @@ period: {
 
 
 <footer>
-  CONTACT
-Do you have any suggestions, questions or information about this work?
+<dl>
+  <dt>Last Update</dt> 
+<dd>16.08.2024</dd>
 
-WRITE US
+<dt>Copyright © 2024</dt> 
+<dd>All rights reserved.</dd>
 
-PERMALINK
-
-staedelmuseum.de/go/ds/bib2472ii99a
-
-FUNDED BY
-
-LAST UPDATE
-
-31.07.2024
-
-LEGAL INFO
-
-Imprint
-Privacy
-Copyright © 2024 Städel Museum
-All rights reserved.
-DIGITAL COLLECTION
-
-Home
-Works
-Artists
-Albums
-About the digital collection
-SOCIAL MEDIA
+<dt>DIGITAL COLLECTION</dt>
+<dd>powered by Grouper</dd>
+</dl>
 </footer>
 
 
@@ -254,6 +235,7 @@ function darkmode() {
     else
     modeButton.innerHTML="dark mode";
 }
+
 
 document.getElementById('lang-toggle').addEventListener('click', function(e){
   e.preventDefault();

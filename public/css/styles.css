@@ -8,13 +8,14 @@
   --tabletbg70: rgb(239, 239, 239, 0.7);
   --tablettext: #blue;
   --lightyellow: rgba(255, 254, 197, 0.572);
-  --dmbg: #1e1e1e;
+  --dmbg: #000;
   --dmtext: #f0f0f0;
   --oneocolor:#9B111E;
   --oneocolorbright:#d50d21;
   --mouse-x: 50%;
   --mouse-y: 50%;
   --footer: #474444;
+  --main: calc(100vh - 8em);
 }
 * {
   padding: 0;
@@ -97,12 +98,15 @@ header {
 
 #logo {
   background: url(../assets/tk_logo.svg) 0 0 no-repeat;
-  background-position: 1em;
-  width: 22em;
-  padding: 0 7.5em;
+  /*background-position: 1em;*/
+  width: 200px;
+  height: 115px;
+  /*padding: 0 7.5em;
   text-indent: 15em;
-  overflow: hidden;
-  margin-left: 22em;
+  overflow: hidden;*/
+  margin-right: 12em;
+  margin-left: 20px;
+  margin-top: 20px;
   z-index: 10000;
   transition: all .5s;
 }
@@ -167,7 +171,7 @@ a{
 main {
   padding-top:6em;
   width: 100vw;
-  height: 100vh;
+  height: var(--main);
 }
 
 #vis_menu_container {
@@ -177,7 +181,7 @@ main {
 
 #galleryView {
   width: 100vw;
-  height: calc(100vh - 6em);
+  height: var(--main);
   overflow: hidden;
   display: grid;
   grid-template-columns: 35vw 65vw;
@@ -185,7 +189,7 @@ main {
 
 #timelineView {
   width: 100vw;
-  height: calc(100vh - 6em);
+  height: var(--main);
   overflow: hidden;
   display: grid;
   grid-template-columns: 50vw 50vw;
@@ -195,12 +199,12 @@ main {
   grid-area: "preview";
   display: block;
   overflow-y: scroll;
-  height: calc(100vh - 6em);
+  height: var(--main);
 }
 
 #imagesSupContainer {
   grid-area: "thumbs";
-  height: calc(100vh - 6em);
+  height: var(--main);
   vertical-align: top;
   overflow: hidden;
   border-top:5px solid var(--bg);
@@ -226,13 +230,13 @@ main {
 #imagesContainer {
   display: flex;
   flex-flow: wrap;
-  height: calc(100vh - 6em);
+  height: var(--main);
   overflow-y: scroll;
   /*
   align-content: space-between;*/
   /*text-align: left;
   position: relative;*/
-  padding: 5em 2em;
+  padding: 5em;
   justify-content: flex-end;
   /*counter-reset: items;
   margin-bottom: 20em;
@@ -257,13 +261,13 @@ main {
   width: auto;
   position: relative;
   overflow: hidden;
-  margin: 0.25rem;
+  margin: 0.15rem;
   padding: 0;
+}
+/*.darkmode #galleryView figure {
   border: 1px solid var(--dmbg);
-}
-.darkmode #galleryView figure {
 border: 1px solid var(--bg);
-}
+}*/
 .groupS {
   width: 33%;
   padding:.5em;
@@ -278,7 +282,7 @@ border: 1px solid var(--bg);
 .groupS::before {
   counter-increment: items;
   content: counter(items);
-}*/
+}
 .groupS:nth-child(3n+1) {
   order: 1;
 }
@@ -289,7 +293,7 @@ border: 1px solid var(--bg);
 
 .groupS:nth-child(3n) {
   order: 3;
-}
+}*/
 
 
 #galleryView.galleryTags {
@@ -307,11 +311,11 @@ border: 1px solid var(--bg);
 .galleryTags figure img,
 #galleryView .groupA figure img,
 #galleryView .groupS figure img {
-  margin: 0;
+  /*margin: 0;*/
   padding: 0;
 
-  height: 1em;
-  width: 1em;
+  height: 2rem;
+  width: 2em;
   object-fit: cover;
   object-position: 50% 50%;
 }
@@ -377,9 +381,9 @@ border: 1px solid var(--bg);
 #galleryView .groupA:hover,
 .selected {
   background-color: #ffcf47;
-  /*
-  color: var(--bg);
+  color: var(--dmbg);
   transition: all 0.2s;
+  /*
   */
 }
 
@@ -404,8 +408,7 @@ border: 1px solid var(--bg);
   /*background-color: #efefef;*/
 }
 
-.gResim,
-.gFigür {
+.galleryGrouptype .g8 {
   width: 66%;
 }
 
@@ -475,7 +478,7 @@ figure:hover,
 #imagesContainer.hover figure.hover {
   filter: opacity(100%) !important;
   scale: 1.5;
-  border: 5px solid var(--bg);
+  border: 2px solid var(--bg);
   z-index: 1000;
   margin: 0 2em;
 }
@@ -492,9 +495,8 @@ figure:hover,
 
 
 .label {
-  padding: 0.75em;
+  padding: 2em;
   font-size: var(--textlabel);
-  margin-left: 12em;
 }
 
 /*
@@ -539,11 +541,11 @@ figure.hover .imageThumb {
 }
 
 .darkmode ::-webkit-scrollbar-track {
-  background-color: var(--dmtext);
+  background-color: var(--lightyellow);
 }
 
 .darkmode ::-webkit-scrollbar-thumb {
-  background-color: var(--dmtext);
+  background-color: var(--lightyellow);
 }
 
 .darkmode ::-webkit-scrollbar-thumb:hover {
@@ -757,7 +759,7 @@ input[type="range"]:focus::-moz-range-thumb {
 }
 
 /*-------------------------------------------------------------*/
-
+/*
 #controller_nav {
   width: 30vw;
   height: 100vh;
@@ -883,7 +885,7 @@ input[type="range"]:focus::-moz-range-thumb {
 }
 
 /*#artistsList li {
-}*/
+}
 #mobController>div a {
   padding: 2em;
   text-decoration: none;
@@ -928,14 +930,14 @@ input[type="range"]:focus::-moz-range-thumb {
   width: 3em;
 }
 
-/*.slider__legend{display: none;}*/
+/*.slider__legend{display: none;}
 .wheelContainer {
   width: 30vw;
   height: 100vh;
 }
 
 .wheel {
-  /*float: right;*/
+  /*float: right;
   margin-top: 25vh;
   width: 30vw;
   padding: 40px;
@@ -950,7 +952,7 @@ input[type="range"]:focus::-moz-range-thumb {
   left: 6vw;
   text-align: center;
   width: 20vw;
-}
+}*/
 
 
 
@@ -1039,26 +1041,26 @@ time[aria-label="Date"]{
   display: flex;
   flex-wrap: wrap;
   background-color: #fff;
-  width:60em;
+  width: 100%;
   padding:2em;
   margin:10em 0 5em;
-  border-top:3px solid var(--dmbg)
+  /*border-top:3px solid var(--bg);*/
+  border-radius: .75em;
 }
 #objectData dl {
   display: flex;
   flex-wrap: wrap;
   margin:1em 1em 5em;
-  width: 66%;
+  width: 100%;
   line-height: 2.5em;
 
 }
 #objectData h4 {
-  width: 33%;
+  margin-left: calc(33% + .9em);
   text-transform: lowercase;
   font-variant: small-caps;
 }
-dt {
-
+#objectData dt {
   width: 33%;
   opacity: 0.6;
   text-transform: lowercase;
@@ -1066,7 +1068,7 @@ dt {
   text-align: right;
   font-size: .9em;
 }
-dd {
+#objectData dd {
   margin-left: auto;
   width: 66%;
 }
@@ -1079,6 +1081,10 @@ dd {
   position: fixed;
   left: 35%;
   top: 6em;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
 }
 
 #alphabetNav a{
@@ -1181,7 +1187,7 @@ color: var(--bg);
   background: #bbb;
 }
 .darkmode #about .bookCard{background-color:#000;}
-.darkmode #objectData{background-color:#000;}
+.darkmode #objectData{background-color:#4e413c;}
 
   #briefHistory{font-size:.8em;margin-left:50em;max-width: 80em;}
 #books{font-size:.8em;padding-right:10em}
@@ -1215,9 +1221,22 @@ main#splashscreen{
 }
 
 footer{
-  font-size:2em;
-  background-color: var(--footer);
-  color:var(--bg)
+  font-size:.8em;
+  color:var(--bg);
+  position: fixed;
+  bottom:0;
+  width:100vw;
+}
+footer dl{
+  display: flex;
+    justify-content: center;
+    flex-wrap: nowrap;
+    padding:.5em;
+}
+footer dl dt{
+  margin-left:8em;
+  margin-right:1em;
+  opacity: .7;
 }
 
 #shownwork a{

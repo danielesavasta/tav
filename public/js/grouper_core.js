@@ -763,11 +763,11 @@ function populateImages(container, database, databasetwo, imKey) {
     }
     i++;
   }
-  let galleryViewContent='<div id="imagesSupContainer">';
+  let galleryViewContent='<section id="artworkDescription"></section><div id="imagesSupContainer">';
   /*if(!settings.exhibitionMode) {
     galleryViewContent+='<div class="tool"><input onclick="lockClick()" type="checkbox" id="galleryOverUnlocked" name="galleryOverUnlocked"><label for="galleryOverUnlocked">lock item</label> <input type="range" min="5" max="100" value="50" class="linear_slider" id="imgSize"></input></div>';
   }*/
-  galleryViewContent+=`<div id="imagesContainer" >${images}</div></div><section id="artworkDescription"></section>`;
+  galleryViewContent+=`<div id="imagesContainer" >${images}</div></div>`;
   galleryView.innerHTML =galleryViewContent;
   const imagesContainer = document.getElementById("imagesContainer");
   imagesContainer.onmouseover = imgOver;
@@ -909,11 +909,11 @@ function populateImagesInGroups(container, database, databasetwo, groups, imKey,
       images+="</section>"}
   })
   
-  let galleryViewContent='<div id="imagesSupContainer">';
+  let galleryViewContent='<section id="artworkDescription"></section><div id="imagesSupContainer">';
   /*if(!settings.exhibitionMode) {
     galleryViewContent+='<div class="tool"><input onclick="lockClick()" type="checkbox" id="galleryOverUnlocked" name="galleryOverUnlocked"><label for="galleryOverUnlocked">lock item</label> <input type="range" min="5" max="100" value="50" class="linear_slider" id="imgSize"></input></div>';
   }*/
-  galleryViewContent+=`<div id="imagesContainer">${images}</div></div><section id="artworkDescription"></section>`;
+  galleryViewContent+=`<div id="imagesContainer">${images}</div></div>`;
   galleryView.innerHTML =galleryViewContent;
   const imagesContainer = document.getElementById("imagesContainer");
   imagesContainer.onmouseover = imgOver;
@@ -978,11 +978,11 @@ function populateArtists(container, database, databasetwo, imKey) {
     alphabetNav+= `<a onclick='scrollToLetter("#imagesContainer","#${letr}")'>${letr}</a>`;
   }
 
-  let galleryViewContent=`<div id="imagesSupContainer">`;
+  let galleryViewContent=`<section id="artworkDescription"></section><div id="imagesSupContainer">`;
   /*if(!settings.exhibitionMode) {
     galleryViewContent+='<div class="tool"><input onclick="lockClick()" type="checkbox" id="galleryOverUnlocked" name="galleryOverUnlocked"><label for="galleryOverUnlocked">lock item</label> <input type="range" min="5" max="100" value="50" class="linear_slider" id="imgSize"></input></div>';
   }*/
-  galleryViewContent+=`<div id="imagesContainer">${images}</div></div>${alphabetNav}</div></div><section id="artworkDescription"></section>`;
+  galleryViewContent+=`<div id="imagesContainer">${images}</div></div>${alphabetNav}</div></div>`;
   galleryView.innerHTML =galleryViewContent;
   const imagesContainer = document.getElementById("imagesContainer");
   imagesContainer.onmouseover = imgOver;
