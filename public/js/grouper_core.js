@@ -6,9 +6,9 @@ var db,
   selectedCol;
 var selector = [];
 const fullDir="/full/";
-const sDir="/thumbp/";
+const sDir="/thumbs/";
 /*const alphabetTR="abcçdefgğhiıjklmnoöprsştuüvyz"*/
-const alphabetTR="ABCÇDEFGĞHİIJKLMNOÖPRSŞTUÜVYZ";
+const alphabetTR="ABCÇDEFGĞHIİJKLMNOÖPRSŞTUÜVYZ";
 
 const metadataCategories = [];
 let foundItemID = 0;
@@ -238,6 +238,15 @@ function groupsV() {
   populateGroups(main, db, dba, groups, settings.imageField, groupsfieldname);
 }
 
+function searchV(dbLen) {
+  populateImages(main, db, dba, settings.imageField);
+  let imagesContainer=document.querySelector("#imagesContainer");
+  if(dbLen<25) {imagesContainer.classList.add("images25")} else
+  if(dbLen<50) {imagesContainer.classList.add("images50")} else
+  if(dbLen<100) {imagesContainer.classList.add("images100")}
+  loadRandomCard(db);
+}
+
 function galleryV() {
   if(groupsfieldname!="")
     if(groupsfieldname=="artists")
@@ -247,11 +256,13 @@ function galleryV() {
   else
     populateImages(main, db, dba, settings.imageField);
   //db.sort((a,b) => a.title?.localeCompare(b.title));
-  let randomID=Math.floor((Math.random()*db.length)+1);
-  console.log("randomid: "+randomID);
-  loadCardinContainer(db[randomID]._id);
+  loadRandomCard(db);
 }
-
+function loadRandomCard(db){
+let randomID=Math.floor((Math.random()*db.length)).toString();
+console.log("randomid: "+randomID);
+loadCardinContainer(db[randomID]._id);
+}
 async function timelineV() {
   //db.sort((a,b) => a.date?.localeCompare(b.date));
   const result = await Object.groupBy(db, ({ date }) => date);
@@ -649,10 +660,40 @@ function loadCardinContainer(id){
   container.innerHTML = returnCardContent(foundItem,foundArtist)
 }
 
+
+async function scrollToAndBack(v) {
+ // let scrolly=document.getElementById("objectData").scrollHeight;
+
+  const currentScrollTop = document.querySelector("#artworkDescription").scrollTop;
+  const targetOffsetTop = document.querySelector("#artworkDescription").getBoundingClientRect().top + window.pageYOffset;
+
+  // Calculate the new scroll position to bring the target element into view
+  const newScrollTop = currentScrollTop + targetOffsetTop - 110;
+
+
+  log("scrolly "+currentScrollTop + " - " + targetOffsetTop+ " - " +  newScrollTop)
+  if(newScrollTop>0)
+    { 
+      await scrollToElement("#artworkDescription","#imgSlider");
+      document.querySelector("#readmore").classList.remove("up");
+      //log("it was clicked "+newScrollTop)
+      //document.getElementById("readmore").onclick=scrollToAndBack(1);
+    } else {
+      await scrollToElement("#artworkDescription","#objectData");
+      document.querySelector("#readmore").classList.add("up");
+      //log("it should go up clicked "+newScrollTop)
+    }
+    /*
+    else {
+      scrollToElement("#artworkDescription","#imgSlider") 
+      document.getElementById("readmore").onclick=scrollToAndBack(0);
+    }*/
+}
+
 function returnCardContent(foundItem,foundArtist){
   let carousel = '';
   //if(!settings.exhibitionMode) carousel+=`<article id="addToSelector" class="tool" onclick="addToSelector()">+</div>`;
-      carousel += `<div class="imgslider"><div class="slides">`;
+      carousel += `<div class="imgslider" id="imgSlider"><div class="slides">`;
       if(settings.imageArray) {
       let i = 0,
         len = foundItem[imKey].length;
@@ -677,7 +718,7 @@ function returnCardContent(foundItem,foundArtist){
       else metadata += `)</a>`;
 
 
-      metadata += `<a onclick='scrollToElement("#artworkDescription","#objectData")' id="readmore">View Full Work Details</a><div id="objectData"><h4>Identification</h4><dl>
+      metadata += `<a onclick='scrollToAndBack(0)' id="readmore"></a><div id="objectData"><h4>Identification</h4><dl>
                    <dt>Inventory number</dt><dd>TK-${foundItem.id.toString().padStart(5, '0')}</dd>
                    <dt>Title (tr)</dt><dd>${foundItem.title_tr}</dd>
                    <dt>Title (en)</dt><dd>${foundItem.title_en}</dd>
@@ -696,6 +737,8 @@ function returnCardContent(foundItem,foundArtist){
                    </dl>
                    <h4>Subject</h4><dl>
                    <dt>Theme</dt><dd>${foundItem.theme}</dd>
+                   <dt>Label (tr)</dt><dd>${foundItem.label_tr}</dd>
+                   <dt>Label (en)</dt><dd>${foundItem.label_en}</dd>
                    </dl>
                    <h4>Acquisition</h4><dl>
                    <dt>Provenance</dt><dd>${foundItem.provenance}</dd>
@@ -748,8 +791,9 @@ function populateImages(container, database, databasetwo, imKey) {
   ); // Creating the view container
 
   let images = "";
-  log(database.length);
+  log("dblength: "+database.length);
   let i = 0, len = database.length;
+  //if(database[i][imKey].length)
   while (i < len) {
     if(settings.imageArray) {
     let j = 0,
@@ -851,7 +895,7 @@ function populateGroups(container, database, databasetwo, groups, imKey, fieldna
 }
 
 function hideOthersThumbs(thisClass){
-  log(thisClass)
+  log("thisclass: "+thisClass)
   let thumbs=document.getElementsByClassName("imageThumb");
   for (var i = 0; i < thumbs.length; i++) {
     thumbs[i].classList.add('hide');
@@ -874,7 +918,7 @@ function populateImagesInGroups(container, database, databasetwo, groups, imKey,
   let images = "";
   let imagesByGroups = {};
   //groups = groups.split(",");
-  log(fieldname);
+  log("fieldgroup: "+fieldname);
   let j = 0,
     lenj = groups.length;
   while(j<lenj) {
@@ -893,8 +937,20 @@ function populateImagesInGroups(container, database, databasetwo, groups, imKey,
       }}
     j++;
   }
+  //log(typeof(imagesByGroups));
+  //imagesByGroups.sort((a,b) => a.length - b.length);
   log(imagesByGroups);
-  Object.entries(imagesByGroups).forEach(([key, value]) => {
+  /*let s=[];
+  for(group in imagesByGroups) {
+    s.push([imagesByGroups[group],imagesByGroups[group].length])
+    }
+    s.sort(function(a,b) {return a[1] - b[1]})
+    */
+    let sortedGroups = Object.entries(imagesByGroups)
+    .map(([key, value]) => [key, value.length])
+    .sort((a, b) => a[1] - b[1]);
+  log(sortedGroups);
+ /* Object.entries(imagesByGroups).forEach(([key, value]) => {
     var keyTrim="";
     if((key!=undefined)&&(key!="false")) {
       keyTrim=key.replace(/\s/g, "");
@@ -907,8 +963,23 @@ function populateImagesInGroups(container, database, databasetwo, groups, imKey,
           i++;
       }
       images+="</section>"}
-  })
+  })*/
   
+      for(let [key, value] of sortedGroups) {
+        let keyTrim = key.trim();
+        if(key != 'undefined' && key != 'false') {
+            images += `<section class="groupS g${keyTrim}"><div class="groupH"><h3>${tag(fieldname, key)}</h3><h4>${imagesByGroups[keyTrim].length}</h4></div>`;
+            log("value: "+value);
+            let i = 0, len = value;
+            while (i < len) {
+                log(imagesByGroups[keyTrim][i]._id);
+                images += prepareIMG(imagesByGroups[keyTrim][i]._id,"imageThumb",imagesByGroups[keyTrim][i][imKey]);
+                i++;
+            }
+            images += "</section>";
+        }
+    }
+
   let galleryViewContent='<section id="artworkDescription"></section><div id="imagesSupContainer">';
   /*if(!settings.exhibitionMode) {
     galleryViewContent+='<div class="tool"><input onclick="lockClick()" type="checkbox" id="galleryOverUnlocked" name="galleryOverUnlocked"><label for="galleryOverUnlocked">lock item</label> <input type="range" min="5" max="100" value="50" class="linear_slider" id="imgSize"></input></div>';
@@ -938,7 +1009,7 @@ function populateArtists(container, database, databasetwo, imKey) {
     imagesByGroups[artista.name]=_.filter(database, function(o) { return o.artist_id===artista.id });
     imagesByGroups[artista.name].id=artista.id;
   });
-  log(imagesByGroups)
+  log("imagesbygroup: "+imagesByGroups)
   /*
   let letterOrder="";
   Object.entries(imagesByGroups).forEach(([key, value]) => {
@@ -1029,6 +1100,25 @@ function prepareIMG(id, classes, src) {
     '" class="' +
     classes +
     '" loading="lazy" decoding="asynchronous" /></figure>');
+}
+
+function searchNow(){
+  /*let input = document.getElementById("searchKey").value;
+  if (input != "") {
+    log("searchNow: "+input);
+  }*/
+}
+
+async function searchButton(){
+  let input = document.getElementById("searchKey").value;
+  if (input != "") {
+    log("searchNow: "+input);
+    window.location.href="/search/"+input;
+    //let found = (db.some(db => db.includes(input)));
+
+    //= await findIds("*" + input + "*");
+    //log("I found this:"+found);
+  }
 }
 
 /* ---------------------------------- searchFor :: sort table view by column header ---------------------------------- */

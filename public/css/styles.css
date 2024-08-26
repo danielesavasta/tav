@@ -14,7 +14,7 @@
   --oneocolorbright:#d50d21;
   --mouse-x: 50%;
   --mouse-y: 50%;
-  --footer: #474444;
+  --bg_two: #373636;
   --main: calc(100vh - 8em);
 }
 * {
@@ -155,10 +155,20 @@ nav a, #readmore {
   font-size: 1rem;
   letter-spacing: 0.05em;
   text-decoration: none;
+  border-radius: 2.5em;
 }
 #readmore {
-float: right;
-    margin: 5em;
+  background: url(../assets/arrow_w.svg) 0 0 no-repeat;
+  position: absolute;
+  bottom: 2rem;
+  left: 31vw;
+  width: 3rem;
+  height: 3rem;
+  transform:rotate(180deg)
+}
+#readmore.up{
+  transform:rotate(0deg)
+
 }
 nav a:hover, #readmore:hover {
   background-color: #000;
@@ -238,7 +248,7 @@ main {
   /*text-align: left;
   position: relative;*/
   padding: 5em;
-  justify-content: flex-end;
+  align-content: flex-start;
   /*counter-reset: items;
   margin-bottom: 20em;
   margin-top: 10em;
@@ -265,6 +275,10 @@ main {
   margin: 0.15rem;
   padding: 0;
 }
+
+#galleryView .images25  figure { height:14em; }
+#galleryView .images50 figure { height:10em; }
+#galleryView .images100 figure { height:7em; }
 /*.darkmode #galleryView figure {
   border: 1px solid var(--dmbg);
 border: 1px solid var(--bg);
@@ -410,9 +424,15 @@ border: 1px solid var(--bg);
 }
 
 .galleryGrouptype .g8 {
-  width: 66%;
+  width: 100%;
 }
-
+/*
+.galleryGrouptype .g5,.galleryGrouptype .g9,.galleryGrouptype .g3,.galleryGrouptype .g2,.galleryGrouptype .g7 {
+  width: 20%;
+}
+.galleryGrouptype .g1,.galleryGrouptype .g4,.galleryGrouptype .g6,.galleryGrouptype .g10{
+  width: 25%;
+}*/
 .viewGroups #imagesContainer {
   text-align: left;
 }
@@ -496,7 +516,7 @@ figure:hover,
 
 
 .label {
-  padding: 2em;
+  padding: 0 2em 5em;
   font-size: var(--textlabel);
 }
 
@@ -964,6 +984,7 @@ input[type="range"]:focus::-moz-range-thumb {
 
 .lang a {
   color: black;
+  height: 2.4rem;
   text-decoration: none;
   text-transform: uppercase;
 }
@@ -1029,7 +1050,8 @@ input[type="range"]:focus::-moz-range-thumb {
 
 h1,h2 {
   font-family: "Alegreya", serif;
-  font-size: 4em;
+  font-size: 3.25em;
+  line-height: 1.05em;
   font-weight: 500;
 }
 
@@ -1136,24 +1158,41 @@ color: var(--bg);
   background-color: rgb(0,0,0);
   background-color: rgba(0,0,0, 0.9); 
 }
-
+.overlay {
+  font-size: 2rem;
+  line-height: 2em;
+}
 .searchbox-content {
   position: relative;
   top: 46%;
   width: 80%;
   text-align: center;
-  margin-top: 30px;
+  /*margin-top: 30px;*/
   margin: auto;
 }
+.searchbox-content img{height: 3.65rem}
 
 /* Close button */
 .overlay .closebtn {
   position: absolute;
-  top: 20px;
-  right: 45px;
-  font-size: 60px;
+  top: 2em;
+  right: 3em;
+  font-size: 2em;
   cursor: pointer;
   color: white;
+}
+
+#searchTitle {
+  margin-left:35vw;
+  width:65vw;
+  text-align: center;
+  height: 0;
+  text-transform: uppercase;
+}
+
+
+#searchTitle h1{
+  display: inline;
 }
 
 .overlay .closebtn:hover {
@@ -1161,8 +1200,8 @@ color: var(--bg);
 }
 
 .overlay input[type=text] {
-  padding: 15px;
-  font-size: 17px;
+  padding: 1.5em;
+  font-size: 2rem;
   border: none;
   float: left;
   width: 80%;
@@ -1176,10 +1215,8 @@ color: var(--bg);
 /* Style the submit button */
 .overlay button {
   float: left;
-  width: 20%;
-  padding: 15px;
+  padding: 2em;
   background: #ddd;
-  font-size: 17px;
   border: none;
   cursor: pointer;
 }
@@ -1188,7 +1225,7 @@ color: var(--bg);
   background: #bbb;
 }
 .darkmode #about .bookCard{background-color:#000;}
-.darkmode #objectData{background-color:#4e413c;}
+.darkmode #objectData{background-color:var(--bg_two);}
 
   #briefHistory{font-size:.8em;margin-left:50em;max-width: 80em;}
 #books{font-size:.8em;padding-right:10em}

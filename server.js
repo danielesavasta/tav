@@ -8,7 +8,7 @@ import handlebars from "handlebars";
 
 const PORT =  10000;
 const host = ("RENDER" in process.env) ? `0.0.0.0` : `localhost`;
-const assets = 'https://taviloglukoleksiyon.org/eserler';
+const assets = '/images'//https://taviloglukoleksiyon.org/eserler';
 
 const dbWorks ='work';
 const dbArtists='artist';
@@ -79,6 +79,34 @@ server.get("/gallery", async function (req, reply) {
     return "Error Found";
   }
 });
+
+server.get("/search/:keywords", async function (req, reply) {
+  try {
+   // let  key  = "\"Street\"";
+    //`\"${req.params.keywords}\"`;
+    //console.log(req.params);
+   // console.log(key);
+    const regex = new RegExp(req.params.keywords, 'i');
+    let wQuery = { $or: [{ title_en: regex }, { title_tr: regex }, { label_en: regex }, { label_tr: regex }] };
+    let aQuery = { $or: [{ name: regex }] };
+    //const index = await server.mongo.db.collection(dbWorks).createIndex({field:"text"});
+    const collection = await server.mongo.db.collection(dbWorks)
+    const resul=  await collection.find(wQuery).toArray()
+    const resul2=  await artistCollection.find(aQuery).toArray()
+    const dbLen=resul.length;
+    //const result = await collection.find( { $text: { $search: /treet/i }})
+   // console.log("index>"+index);
+    //console.log(resul);
+    const artistCollection = server.mongo.db.collection(dbArtists)
+    const artistResult = await artistCollection.find().toArray()
+   return reply.view("views/wall/search.hbs", { title: "grouper", keyword:req.params.keywords, dbLength: dbLen, bodyClass: "search", works:JSON.stringify(resul), assets:assets, groups:"",artists:JSON.stringify(artistResult), groups:JSON.stringify("[]") }, {layout: "views/templates/layout.hbs"});
+   
+  } catch (error) {
+    console.log(error);
+    return "Error Found";
+  }
+});
+
 server.get("/groups/:group", async function (req, reply) {
   try {
     const collection = server.mongo.db.collection(dbWorks)
@@ -86,7 +114,7 @@ server.get("/groups/:group", async function (req, reply) {
     const artistCollection = server.mongo.db.collection(dbArtists)
     const artistResult = await artistCollection.find().toArray()
     const { group } = req.params;
-    console.log(group);
+   // console.log(group);
     const grouplist = await collection.distinct(group);
     return reply.view("views/wall/groups.hbs", { title: "grouper", bodyClass: "group"+group, works:JSON.stringify(result), assets:assets,groups:"",artists:JSON.stringify(artistResult), groupsfieldname: group, groups:JSON.stringify(grouplist) }, {layout: "views/templates/layout.hbs"});
   } catch (error) {

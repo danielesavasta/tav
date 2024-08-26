@@ -1,0 +1,16 @@
+<main>
+<div id="searchTitle">your search for <h1>{{{ keyword }}}</h1> has produced {{{dbLength}}} results.</div>
+</main>
+
+<script src="/js/lib/lodash.min.js"></script>
+<script src="/js/grouper_core.js"></script>
+<script>
+  async function start() { 
+  db={{{works}}}; 
+  dba={{{artists}}};
+  groupsfieldname="{{groupsfieldname}}"; 
+  groups={{{groups}}}; 
+  searchV( {{{dbLength}}} ); 
+  }
+  start();
+</script>

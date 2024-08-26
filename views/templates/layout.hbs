@@ -203,10 +203,10 @@ period: {
     <div id="searchbox" class="overlay">
         <span class="closebtn" onclick="closeSearch()" title="Close Searchbox">x</span>
   <div class="searchbox-content">
-       <form>
-      <input type="text" placeholder="Search..." name="search">
-      <button type="submit"></button>
-    </form>
+    <div>
+      <input id="searchKey" type="text" placeholder="Search..." name="search" onkeypress="searchNow(event)">
+      <button type="submit" onclick="searchButton()" id="searchButton"><img src="/assets/search.svg"/></button>
+    </div>
     </div>
     </div>
 
@@ -247,6 +247,16 @@ function navToggle(){
   var element = document.getElementsByTagName("nav");
   element[0].classList.toggle("menu");
 }
+
+
+var searchInput = document.getElementById("searchKey");
+searchInput.addEventListener("keypress", function (event) {
+  if (event.key === "Enter"){
+    console.log("enter!!")
+    event.preventDefault();
+    document.getElementById("searchButton").click();
+  }
+}); 
   
 </script>
 
