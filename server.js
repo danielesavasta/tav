@@ -8,7 +8,7 @@ import handlebars from "handlebars";
 
 const PORT =  10000;
 const host = ("RENDER" in process.env) ? `0.0.0.0` : `localhost`;
-const assets = '/images'//https://taviloglukoleksiyon.org/eserler';
+const assets = 'https://taviloglukoleksiyon.org/eserler'//https://taviloglukoleksiyon.org/eserler';
 
 const dbWorks ='work';
 const dbArtists='artist';
