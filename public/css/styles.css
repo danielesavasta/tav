@@ -155,7 +155,7 @@ nav a, #readmore {
   font-size: 1rem;
   letter-spacing: 0.05em;
   text-decoration: none;
-  border-radius: 2.5em;
+  
 }
 #readmore {
   background: url(../assets/arrow_w.svg) 0 0 no-repeat;
@@ -164,7 +164,8 @@ nav a, #readmore {
   left: 31vw;
   width: 3rem;
   height: 3rem;
-  transform:rotate(180deg)
+  transform:rotate(180deg);
+  border-radius: 2.5em;
 }
 #readmore.up{
   transform:rotate(0deg)
