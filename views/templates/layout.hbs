@@ -7,10 +7,11 @@
     <title>{{title}}</title>
     <link rel="stylesheet" href="/css/styles.css" />
     <script src="/js/lib/smoothscroll.min.js"></script>
-    <script src="/js/lang_en.js"></script>
+    
   </head>
 
   <script>
+    const dict= JSON.parse(`{{{dict}}}`);
     let lang="en";
     smoothScroll.defaults({duration: 200}); 
     const settings = { 
@@ -28,23 +29,23 @@
   <body class="darkmode {{{bodyClass}}}">
     <header>
       <a id="logo" href="https://taviloglukoleksiyon.org/tk/">
-        <span>Taviloğlu Koleksiyonu</span>
+        <span>{{lang.tav}}</span>
       </a>
       <nav id="primary-menu">
-        <a href="https://taviloglukoleksiyon.org/tk/">About the Collection</a>
+        <a href="https://taviloglukoleksiyon.org/tk/">{{lang.nav.about}}</a>
         |
-        <a href="/gallery">Gallery</a>
-        <a href="/gallery/artists">Artists</a>
-        <a href="/gallery/type">Type</a>
+        <a href="/gallery">{{lang.nav.gallery}}</a>
+        <a href="/gallery/artists">{{lang.nav.artists}}</a>
+        <a href="/gallery/type">{{lang.nav.type}}</a>
         |
-        <a onclick="opensearch()" class="searchButton">Search</a>
+        <a onclick="opensearch()" class="searchButton">{{lang.nav.search}}</a>
         <!--<a href="/timeline">Timeline</a>
         <a href="/groups/technique">Technique</a>
         <a href="/gallery/material">Material</a>
         <a href="/gallery/theme">Theme</a>-->
       </nav>
       <nav id="secondary-menu">
-        <a id="modeButton" onclick="darkmode()">light mode</a>
+        <a id="modeButton" onclick="darkmode()">{{lang.nav.lmode}}</a>
         <div class="lang">
           <a href="#" id="lang-toggle" class="lang__option lang__option--current">en<span class="lang__chevron">›</span></a>
           <ul class="lang__list">
@@ -87,15 +88,13 @@ function darkmode() {
   document.body.classList.toggle("darkmode");
   const modeButton=document.querySelector("#modeButton");
   if(document.body.classList.contains("darkmode"))
-    modeButton.innerHTML="light mode";
+    modeButton.innerHTML="{{lang.nav.lmode}}";
     else
-    modeButton.innerHTML="dark mode";
+    modeButton.innerHTML="{{lang.nav.dmode}}";
 }
-
 
 document.getElementById('lang-toggle').addEventListener('click', function(e){
   e.preventDefault();
-  //console.log(this.parentNode)
   this.parentNode.classList.toggle('is-open');
 });
 
@@ -104,16 +103,24 @@ function navToggle(){
   element[0].classList.toggle("menu");
 }
 
-
 var searchInput = document.getElementById("searchKey");
 searchInput.addEventListener("keypress", function (event) {
   if (event.key === "Enter"){
-    console.log("enter!!")
     event.preventDefault();
     document.getElementById("searchButton").click();
   }
 }); 
   
+  
+function opensearch(){
+  document.getElementById("searchbox").style.display = "block";
+}
+
+// Close the full screen search box
+function closeSearch() {
+  document.getElementById("searchbox").style.display = "none";
+}
+
 </script>
 
   </body>

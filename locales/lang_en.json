@@ -1,0 +1,20 @@
+{ "tav":"Taviloğlu Collection",
+  "quote":"When I started buying paintings for the first time in 1972, I did not know that I was starting a collection...",
+  "search":["your search for "," has produced "," results."],
+  "nav":{
+    "about": "About the Collection",
+    "gallery": "Gallery",
+    "artists": "Artists",
+    "type": "Type",
+    "search": "Search",
+    "lmode": "Light Mode",
+    "dmode": "Dark Mode"
+    },
+  "card":["Identification","Inventory number","Title (tr)","Title (en)","Type","Date","Creator","Artist","Nationality","Life","Physical Characteristics","Materials","Techniques","Dimensions","Subject","Theme","Label (tr)","Label (en)","Acquisition","Provenance","Date","Period","Events","Theme","On show"],
+  "themes":["","Nature","Figure","Conceptual","City","Architecture","Object","Still Life","Abstract","Typographic"],
+  "birthplace": ["Germany","USA","Argentina","Australia","Austria","Bangladesh","Belarus","Belgium","Unknown","Bulgaria","China","Denmark","Egypt","France","Wales","South Korea","Croatia","Netherlands","England","Iran","Ireland","Spain","Spain","Sweden","Switzerland","Italy","Japan","Canada","Montenegro","Korea","Cuba","Lebanon","Hungary","North Macedonia","Malta","Mexico","Nakhchivan","Nicaragua","Peru","Poland","Porugal","Romania","Russia","Slovenia","Taiwan","Ottoman Tripolitania","Türkiye","Ukraine","Greece"],
+  "type": ["","Print","Drawing","Digital Art","Photograph","Calligraphy","Sculpture","Mixed Media","Painting","Video","Installation"],
+  "extheme": ["","Nature","Figures","Cities","Abstract"],
+  "exhall": ["","Feshane","Gazhane","Haliç Tersane","İrhm Gss","İş Bankası","Likör Fb."],
+  "period": ["1972-1982","1983-1992","1993-2002","2003-2012","2013-2024"]
+}

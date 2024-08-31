@@ -94,6 +94,7 @@ header {
   height: 6em;
   position:fixed;
   width:100vw;
+  z-index: 9000;
 }
 
 #logo {
@@ -110,6 +111,7 @@ header {
   margin-top: 20px;
   z-index: 10000;
   transition: all .5s;
+  position: relative;
 }
 
 #logo span {
@@ -497,7 +499,8 @@ border: 1px solid var(--bg);
 }
 
 figure:hover,
-#imagesContainer.hover figure.hover {
+#imagesContainer.hover figure.hover,
+.highlight {
   filter: opacity(100%) !important;
   scale: 1.5;
   border: 2px solid var(--bg);
@@ -534,7 +537,7 @@ figure:hover,
 }*/
 
 .imageThumb:hover,
-figure.hover .imageThumb {
+figure.hover .imageThumb  {
   scale: 1.3;
 }
 
@@ -1239,7 +1242,7 @@ main#splashscreen{
     align-items: flex-end;
     padding: 3rem;
     justify-content: space-between;
-    transition: all .2s;
+    /*transition: all .2s;*/
 }
 #pageLinks{margin-left:50em}
 #splashscreen>blockquote a,#pageLinks a{
@@ -1281,4 +1284,13 @@ footer dl dt{
 #shownwork a{
   color:inherit;
   text-decoration: none;
+}
+
+span[aria-label="Nationality"] {
+  text-transform: lowercase;
+  font-variant: small-caps;
+}
+
+time {
+  font-variant-numeric: oldstyle-nums;
 }

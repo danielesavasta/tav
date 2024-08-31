@@ -21,9 +21,11 @@ const main = document.getElementsByTagName("main")[0];
 var dbLength, itemsCount;
 
 var galleryOverUnlocked = true;
+var overID = -1;
 var root = document.querySelector(":root");
 let scale = 2;
 let _ws = null;
+var selectedID;
 
 function init() {
   _ws = new WebSocket(`ws://${window.location.host}/comm`);
@@ -620,45 +622,6 @@ function sortByTh() {
   let e = document.getElementById("th_" + selectedCol).cellIndex;
   sortGrid(e);
 }
-/*
-function lockClick() {
-  galleryOverUnlocked = true;
-  log("yes");
-}*/
-
-function imgClick(event) {
-  galleryOverUnlocked =!galleryOverUnlocked;
-  document.getElementById("galleryOverUnlocked").checked = true;
-}
-
-function imgOver(event,id) {
-  if(id==undefined)
-    id=event.target.id;
-  log("yo:"+id)
-  if ((galleryOverUnlocked)&&(id)) {
-    let idv = id;
-    if (idv != "imagesContainer" && idv.length > 2) {
-      
-      loadCardinContainer(idv);
-    }
-  }
-}
-
-function loadCardinContainer(id){
-  imKey = settings.imageField;
-  imKey = imKey.toString();
-  log("loadCardinContainer: "+id);
-  let container = document.getElementById("artworkDescription");
-
-  foundItemID = db.findIndex((item) => item._id == id);
-  log("foundItemID: "+foundItemID);
-  let foundItem=db[foundItemID];
-  log("foundItem: "+foundItem);
-  let foundArtistID=dba.findIndex((item) => item.id == foundItem.artist_id);
-  let foundArtist=dba[foundArtistID];
-
-  container.innerHTML = returnCardContent(foundItem,foundArtist)
-}
 
 
 async function scrollToAndBack(v) {
@@ -711,52 +674,54 @@ function returnCardContent(foundItem,foundArtist){
       metadata += `<h2 aria-label="Artwork Title">${title}</h2>`;
       if(foundItem.date!=undefined) metadata += `<time aria-label="Date" datetime=${foundItem.date}">${foundItem.date}</time>`;
       
+      if(foundArtist.name!=undefined) {
       metadata += `<a rel="author"><b>${foundArtist.name}</b> (`
-      if(exValue(foundArtist,"birthplace")) metadata +=`<span aria-label="Nationality">${foundArtist.birthplace}</span>, `;
+      if(exValue(foundArtist,"birthplace")) metadata +=`<span aria-label="Nationality">${tag("birthplace",foundArtist.birthplace)}</span>, `;
       if(exValue(foundArtist,"birthyear")) metadata +=`<time aria-label="Birthyear" datetime="${foundArtist.birthyear}">${foundArtist.birthyear}</time>`;
       if(exValue(foundArtist,"deathyear")) metadata +=` — <time aria-label="Deathyear" datetime="${foundArtist.deathyear}">${foundArtist.deathyear}</time>)</a>`;
       else metadata += `)</a>`;
+    }
 
-
-      metadata += `<a onclick='scrollToAndBack(0)' id="readmore"></a><div id="objectData"><h4>Identification</h4><dl>
-                   <dt>Inventory number</dt><dd>TK-${foundItem.id.toString().padStart(5, '0')}</dd>
-                   <dt>Title (tr)</dt><dd>${foundItem.title_tr}</dd>
-                   <dt>Title (en)</dt><dd>${foundItem.title_en}</dd>
-                   <dt>Type</dt><dd>${tag("type",foundItem.type)}</dd>
-                   <dt>Date</dt><dd>${foundItem.date}</dd>
+      metadata += `<a onclick='scrollToAndBack(0)' id="readmore"></a><div id="objectData"><h4>${tag("card",0)}</h4><dl>
+                   <dt>${tag("card",1)}</dt><dd>TK-${foundItem.id.toString().padStart(5, '0')}</dd>
+                   <dt>${tag("card",2)}</dt><dd>${foundItem.title_tr}</dd>
+                   <dt>${tag("card",3)}</dt><dd>${foundItem.title_en}</dd>
+                   <dt>${tag("card",4)}</dt><dd>${tag("type",foundItem.type)}</dd>
+                   <dt>${tag("card",5)}</dt><dd>${foundItem.date}</dd>
                    </dl>
-                   <h4>Creator</h4><dl>
-                   <dt>Artist</dt><dd>${foundArtist.name}</dd>
-                   <dt>Nationality</dt><dd>${tag("birthplace",foundArtist.birthplace)}</dd>
-                   <dt>Life</dt><dd>${foundArtist.birthyear} - ${foundArtist.deathyear}</dd>
+                   <h4>${tag("card",6)}</h4><dl>
+                   <dt>${tag("card",7)}</dt><dd>${foundArtist.name}</dd>
+                   <dt>${tag("card",8)}</dt><dd>${tag("birthplace",foundArtist.birthplace)}</dd>
+                   <dt>${tag("card",9)}</dt><dd>${foundArtist.birthyear}`
+      if(exValue(foundArtist,"deathyear")) metadata += ` - ${foundArtist.deathyear}`;
+      metadata +=  `</dd></dl>
+                   <h4>${tag("card",10)}</h4><dl>
+                   <dt>${tag("card",11)}</dt><dd>${foundItem.material}</dd>
+                   <dt>${tag("card",12)}</dt><dd>${foundItem.technique}</dd>
+                   <dt>${tag("card",13)}</dt><dd>${foundItem.dimensions}</dd>
                    </dl>
-                   <h4>Physical Characteristics</h4><dl>
-                   <dt>Material</dt><dd>${foundItem.material}</dd>
-                   <dt>Technique</dt><dd>${foundItem.technique}</dd>
-                   <dt>Dimensions</dt><dd>${foundItem.dimensions}</dd>
+                   <h4>${tag("card",14)}</h4><dl>
+                   <dt>${tag("card",15)}</dt><dd>${tag("themes",foundItem.theme)}</dd>
+                   <dt>${tag("card",16)}</dt><dd>${foundItem.label_tr}</dd>
+                   <dt>${tag("card",17)}</dt><dd>${foundItem.label_en}</dd>
                    </dl>
-                   <h4>Subject</h4><dl>
-                   <dt>Theme</dt><dd>${foundItem.theme}</dd>
-                   <dt>Label (tr)</dt><dd>${foundItem.label_tr}</dd>
-                   <dt>Label (en)</dt><dd>${foundItem.label_en}</dd>
+                   <h4>${tag("card",18)}</h4><dl>
+                   <!-- <dt>${tag("card",19)}</dt><dd>${foundItem.provenance}</dd> -->
+                   <dt>${tag("card",20)}</dt><dd>${foundItem.acquisition_date}</dd>
+                   <dt>${tag("card",21)}</dt><dd>${tag("period",foundItem.period)}</dd>
                    </dl>
-                   <h4>Acquisition</h4><dl>
-                   <dt>Provenance</dt><dd>${foundItem.provenance}</dd>
-                   <dt>Date</dt><dd>${foundItem.acquisition_date}</dd>
-                   <dt>Period</dt><dd>${tag("period",foundItem.period)}</dd>
-                   </dl>
-                   <h4>Events</h4><dl>
-                   <dt>Theme</dt><dd class="tag">${tag("extheme",foundItem.extheme)}</dd>
-                   <dt>On show</dt><dd class="tag">${tag("exhall",foundItem.exhall)}</dd>
+                   <h4>${tag("card",22)}</h4><dl>
+                   <dt>${tag("card",23)}</dt><dd class="tag">${tag("extheme",foundItem.extheme)}</dd>
+                   <dt>${tag("card",24)}</dt><dd class="tag">${tag("exhall",foundItem.exhall)}</dd>
                    </dl>
                    </div></article>`;
   return carousel + metadata;
 }
 
 function tag(label,id){
-  log("accessing tag: "+label+" > " + id+" > " +lang);
-  log(tags)
-  return tags[label][id][lang];
+  //log("accessing tag: "+label+" > " + id+" > " +lang);
+  //log(tags)
+  return dict[label][id];
 }
 
 function exValue(row,item){
@@ -813,11 +778,7 @@ function populateImages(container, database, databasetwo, imKey) {
   }*/
   galleryViewContent+=`<div id="imagesContainer" >${images}</div></div>`;
   galleryView.innerHTML =galleryViewContent;
-  const imagesContainer = document.getElementById("imagesContainer");
-  imagesContainer.onmouseover = imgOver;
-  imagesContainer.onclick = imgClick;
-  /*
-  imagesContainer.onclick = imgClick;
+  containerControl("imagesContainer");
   /*
   imagesContainer.oncontextmenu = imgRightClick;*/
 /*
@@ -829,6 +790,69 @@ function populateImages(container, database, databasetwo, imKey) {
     imagesContainer.style.fontSize = scale + "em";
   };*/
 }
+
+function imgRelease(event) {
+  log("mousedown")
+  //galleryOverUnlocked = true;
+  //document.getElementById("galleryOverUnlocked").checked = false;
+}
+
+function imgClick(event) {
+  let tid=event.target.id;
+  log("mouseup");
+  log("mup selectedID: "+selectedID);
+  log("thisid: "+tid);
+  if(galleryLock) {
+    if(tid!=selectedID) {
+      loadCardinContainer(tid);
+      galleryLock=true;
+    } else galleryLock=false;
+  } else galleryLock=true;
+}
+let galleryLock=false;
+
+function imgOver(event,id) {
+  overID=id;
+  if(!galleryLock) {
+    if(id==undefined) {
+      id=event.target.id;
+      //log(event.target)
+    }
+    let idv = id;
+    if (idv != "imagesContainer" && idv.length > 2) {
+      loadCardinContainer(idv);
+    }
+  }
+}
+
+function loadCardinContainer(id){
+  imKey = settings.imageField;
+  imKey = imKey.toString();
+  //log("loadCardinContainer: "+id);
+  let container = document.getElementById("artworkDescription");
+
+  foundItemID = db.findIndex((item) => item._id == id);
+  //log("foundItemID: "+foundItemID);
+  let foundItem=db[foundItemID];
+  //log("foundItem: "+foundItem);
+  let foundArtistID=dba.findIndex((item) => item.id == foundItem.artist_id);
+  let foundArtist=dba[foundArtistID];
+  selectedID=id;
+  const imgContainer=document.getElementById("imagesContainer");
+  
+  _.forEach(imgContainer.getElementsByTagName('figure'), function(g) {g.classList.remove("highlight");});
+  document.getElementById(selectedID).parentNode.classList.add("highlight");
+  container.innerHTML = returnCardContent(foundItem,foundArtist);
+}
+
+function containerControl(elemen){
+  let imagesContainer = document.getElementById(elemen);
+  //log(imagesContainer);
+  imagesContainer.onmouseover = imgOver;
+  //imagesContainer.onmousedown = imgRelease;
+  imagesContainer.onmouseup = imgClick;
+}
+
 
 function populateGroups(container, database, databasetwo, groups, imKey, fieldname) {
   const galleryView = createEl(
@@ -888,10 +912,7 @@ function populateGroups(container, database, databasetwo, groups, imKey, fieldna
   }*/
   galleryViewContent+=`<div id="imagesContainer" >${images}</div></div>`;
   galleryView.innerHTML =galleryViewContent;
-  const imagesContainer = document.getElementById("imagesContainer");
-  imagesContainer.onmouseover = imgOver;
-  imagesContainer.onclick = imgClick;
-
+  containerControl("imagesContainer");
 }
 
 function hideOthersThumbs(thisClass){
@@ -986,9 +1007,7 @@ function populateImagesInGroups(container, database, databasetwo, groups, imKey,
   }*/
   galleryViewContent+=`<div id="imagesContainer">${images}</div></div>`;
   galleryView.innerHTML =galleryViewContent;
-  const imagesContainer = document.getElementById("imagesContainer");
-  imagesContainer.onmouseover = imgOver;
-  imagesContainer.onclick = imgClick;
+  containerControl("imagesContainer");
 }
 
 function populateArtists(container, database, databasetwo, imKey) {
@@ -1055,9 +1074,7 @@ function populateArtists(container, database, databasetwo, imKey) {
   }*/
   galleryViewContent+=`<div id="imagesContainer">${images}</div></div>${alphabetNav}</div></div>`;
   galleryView.innerHTML =galleryViewContent;
-  const imagesContainer = document.getElementById("imagesContainer");
-  imagesContainer.onmouseover = imgOver;
-  imagesContainer.onclick = imgClick;
+  containerControl("imagesContainer");
 }
 
 function populateTimeline(container, database, imKey) {
@@ -1084,10 +1101,7 @@ function populateTimeline(container, database, imKey) {
   }*/
   galleryViewContent+=`<div id="timelineContainer">${images}</div></div>`;
   galleryView.innerHTML =galleryViewContent;
-  const imagesContainer = document.getElementById("timelineContainer");
-  imagesContainer.onmouseover = imgOver;
-  imagesContainer.onclick = imgClick;
- /* imagesContainer.oncontextmenu = imgRightClick;*/
+  containerControl("timelineContainer");
 }
 
 function prepareIMG(id, classes, src) {
@@ -1234,7 +1248,9 @@ function toggleShow(elem) {
 
 /* ---------------------------------- log :: lazy console.log ---------------------------------- */
 function log(val) {
-  if (settings.verbose) console.log(val);
+  if (settings.verbose) {
+    console.log(val);
+  }
 }
 
 
@@ -1267,12 +1283,3 @@ function turkcesiralama(a, b){
       }
   }
 } 
-
-function opensearch(){
-  document.getElementById("searchbox").style.display = "block";
-}
-
-// Close the full screen search box
-function closeSearch() {
-  document.getElementById("searchbox").style.display = "none";
-}

@@ -1,6 +1,6 @@
 <main id="splashscreen">
     <div id="shownwork"></div>
-    <blockquote>‘When I started buying paintings for the first time in 1972, I did not know that I was starting a collection...’</blockquote>
+    <blockquote>‘{{lang.quote}}’</blockquote>
     </main>
 
 <!--<script src="/js/lib/lodash.min.js"></script>
@@ -21,8 +21,8 @@
     
     const shownwork=document.querySelector("#shownwork");
     const url=`url("${assets}/full/${work.id}.webp`;
-    console.log(work);
-    console.log(artist);
+    //console.log(work);
+    //console.log(artist);
     bg.style.backgroundImage=url;
     let title=((lang=="tr") ? work.title_tr : (work.title_en==undefined) ? work.title_tr : work.title_en);
     shownwork.innerHTML=`<a href="/work/${work.id}"><h2>${title}</h2><p>${artist.name}</p></a>`;
