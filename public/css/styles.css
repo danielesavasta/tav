@@ -141,9 +141,10 @@ header {
   background: url(../assets/tk_logo.svg) 0 0 no-repeat;
 }
 
-nav {
+nav {/*
   text-align: center;
-  line-height: 6em;
+  line-height: 6em;*/
+    margin-top: 2em;
 }
 
 nav a, #readmore {
@@ -999,14 +1000,25 @@ input[type="range"]:focus::-moz-range-thumb {
   padding: 0;
   display: inline;
 }
-
+/*
 .lang__chevron {
   display: none;
+}*/
+#modeButton, #lang-toggle {
+  height:2.5rem;
+  width:2.5rem;
+  padding: .5rem;
+  display: inline-block;
 }
-
+/*#modeButton, #lang-toggle img {
+ margin: 0.5em 0 0;
+}*/
+#modeButton:hover img, #lang-toggle:hover img {
+  fill: green;
+}
 .lang {
-  border: solid 1px black;
-  min-width: 4rem;
+  border: 0;
+  width: 4rem;
   position: relative;
 }
 
@@ -1014,13 +1026,13 @@ input[type="range"]:focus::-moz-range-thumb {
 .lang__option {
   display: block;
 }
-
+/*
 .lang__chevron {
   /*display: inline-block;*/
-  float: right;
+ /* float: right;
   transform: rotate(90deg);
 }
-
+*/
 .lang__option {
   padding: 0 0.5rem;
 }

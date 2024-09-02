@@ -45,11 +45,12 @@
         <a href="/gallery/theme">Theme</a>-->
       </nav>
       <nav id="secondary-menu">
-        <a id="modeButton" onclick="darkmode()">{{lang.nav.lmode}}</a>
+        <a id="modeButton" onclick="darkmode()"><img src="/assets/darkMode.svg"/></a>
         <div class="lang">
-          <a href="#" id="lang-toggle" class="lang__option lang__option--current">en<span class="lang__chevron">›</span></a>
+          <a href="#" id="lang-toggle" class="lang__option"><img src="/assets/langSwitch.svg"/></a>
           <ul class="lang__list">
-            <li><a href="#" class="lang__option">tr</a></li>
+            <li><a href="#" class="lang__option" onclick="langSwitch('tr')">tur</a></li>
+            <li><a href="#" class="lang__option" onclick="langSwitch('en')">eng</a></li>
           </ul>
         </div>
         <!-- <a href="/login">login</a> -->
