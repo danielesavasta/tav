@@ -12,6 +12,10 @@
 
   <script>
     let lang="{{{lang.lang}}}";
+    //console.log({{dm}})
+    var dam={{dm}};
+    var lmodeActive=!{{dm}};
+
     const dict= JSON.parse(`{{{dict}}}`);
     smoothScroll.defaults({duration: 200}); 
     const settings = { 
@@ -26,7 +30,7 @@
       imageSelector: false, 
       }; 
   </script>
-  <body class="darkmode {{{bodyClass}}}">
+  <body class="{{{bodyClass}}}">
     <header>
       <a id="logo" href="https://taviloglukoleksiyon.org/tk/">
         <span>{{lang.tav}}</span>
@@ -86,17 +90,25 @@
 
 
 <script>
-function darkmode() {
-  //var element = document.body;
-  document.body.classList.toggle("darkmode");
-  const modeButton=document.querySelector("#modeButton");
+function darkmode(setp=false) {
+  if(setp) {
+    if(dam) document.body.classList.add("darkmode");
+  }
+  else document.body.classList.toggle("darkmode");
+  //const modeButton=document.querySelector("#modeButton");
+  let lins=document.getElementsByClassName("lin");
   lmodeActive=!lmodeActive;
- /* if(document.body.classList.contains("darkmode"))
-    modeButton.innerHTML="{{lang.nav.lmode}}";
-    else
-    modeButton.innerHTML="{{lang.nav.dmode}}";*/
+
+  for (let i=0; i<lins.length; i++) {
+    let url = new URL(lins[i].href)
+    url.searchParams.set('dm', lmodeActive)
+    lins[i].href=url;
+  }
 }
-let lmodeActive=false;
+darkmode(true);
+
+
+
 document.getElementById('lang-toggle').addEventListener('click', function(e){
   e.preventDefault();
   this.parentNode.classList.toggle('is-open');

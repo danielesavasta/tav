@@ -27,6 +27,8 @@ await server.register(import('@fastify/compress'), { global: true })
 server.register(fastifyStatic, {
   root: path.join(import.meta.dirname, 'public'),
 });
+
+var dm=true;
 /*
 server.register(import('@fastify/cookie'), {
   secret: "tavilogluNotSoSecret", // for cookies signature
@@ -43,19 +45,17 @@ server.register(fastifyView, {
 });
 server.register(dbConnector);
 
-//import lang_en = ("locale/lang_en.json")
-//const lang_tr = require('./locale/lang_tr.json')
-
 server.get("/", async function (req, reply) {
   try {
     setLang(req.query);
-
+    setMode(req.query);
+    
     const collection = loadWorks();
     const result = await collection.aggregate([{ $sample: { size: 1 } }]).toArray()
     const artistCollection = loadArtists();
     const artistResult = await artistCollection.findOne({'id':result[0].artist_id})
     
-    return reply.view("views/wall/home.hbs", { lang: lang, dict:JSON.stringify(lang), title: "grouper", bodyClass: "home",work:JSON.stringify(result), artist:JSON.stringify(artistResult), assets:assets }, {layout: "views/templates/layout.hbs"});
+    return reply.view("views/wall/home.hbs", { lang: lang, dm: dm,dict:JSON.stringify(lang), title: "grouper", bodyClass: "home",work:JSON.stringify(result), artist:JSON.stringify(artistResult), assets:assets }, {layout: "views/templates/layout.hbs"});
   } catch (error) {
     console.log(error);
     return "Error Found";
@@ -64,6 +64,8 @@ server.get("/", async function (req, reply) {
 server.get("/gallery/:group", async function (req, reply) {
   try {
     setLang(req.query);
+    setMode(req.query);
+
     const collection = loadWorks();
     const result = await collection.find().toArray()
     const artistCollection = loadArtists();
@@ -71,7 +73,7 @@ server.get("/gallery/:group", async function (req, reply) {
     const { group } = req.params;
     console.log(group);
     const grouplist = await collection.distinct(group);
-    return reply.view("views/wall/index.hbs", { lang: lang, dict:JSON.stringify(lang),  title: "grouper", bodyClass: "galleryGroup"+group, works:JSON.stringify(result), assets:assets, groups:"",artists:JSON.stringify(artistResult), groupsfieldname: group, groups:JSON.stringify(grouplist) }, {layout: "views/templates/layout.hbs"});
+    return reply.view("views/wall/index.hbs", { lang: lang, dm: dm, dict:JSON.stringify(lang),  title: "grouper", bodyClass: "galleryGroup"+group, works:JSON.stringify(result), assets:assets, groups:"",artists:JSON.stringify(artistResult), groupsfieldname: group, groups:JSON.stringify(grouplist) }, {layout: "views/templates/layout.hbs"});
   } catch (error) {
     console.log(error);
     return "Error Found";
@@ -82,12 +84,13 @@ server.get("/gallery", async function (req, reply) {
     //console.log(req.query.params)
     //console.log("the selected language is "+ req.query.lan)
     setLang(req.query);
+    setMode(req.query);
     // console.log(lang);
     const collection = loadWorks();
     const result = await collection.find().toArray()
     const artistCollection = loadArtists();
     const artistResult = await artistCollection.find().toArray()
-    return reply.view("views/wall/index.hbs", { lang: lang, dict:JSON.stringify(lang),  title: "grouper", bodyClass: "gallery", works:JSON.stringify(result), assets:assets, groups:"",artists:JSON.stringify(artistResult), groups:JSON.stringify("[]") }, {layout: "views/templates/layout.hbs"});
+    return reply.view("views/wall/index.hbs", { lang: lang, dm: dm, dict:JSON.stringify(lang),  title: "grouper", bodyClass: "gallery", works:JSON.stringify(result), assets:assets, groups:"",artists:JSON.stringify(artistResult), groups:JSON.stringify("[]") }, {layout: "views/templates/layout.hbs"});
    
   } catch (error) {
     console.log(error);
@@ -98,6 +101,8 @@ server.get("/gallery", async function (req, reply) {
 server.get("/search/:keywords", async function (req, reply) {
   try {
     setLang(req.query);
+    setMode(req.query);
+
     const regex = new RegExp(req.params.keywords, 'i');
     let wQuery = { $or: [{ title_en: regex }, { title_tr: regex }, { label_en: regex }, { label_tr: regex }] };
     let aQuery = { $or: [{ name: regex }] };
@@ -111,7 +116,7 @@ server.get("/search/:keywords", async function (req, reply) {
    // console.log(JSON.stringify(resul))
    // console.log(JSON.stringify(resul2))
     const dbLen=resul.length;
-   return reply.view("views/wall/search.hbs", { lang: lang, dict:JSON.stringify(lang), title: "grouper", keyword:req.params.keywords, dbLength: dbLen, bodyClass: "search", works:JSON.stringify(resul), assets:assets, groups:"",artists:JSON.stringify(artistResult), groups:JSON.stringify("[]") }, {layout: "views/templates/layout.hbs"});
+   return reply.view("views/wall/search.hbs", { lang: lang, dm: dm, dict:JSON.stringify(lang), title: "grouper", keyword:req.params.keywords, dbLength: dbLen, bodyClass: "search", works:JSON.stringify(resul), assets:assets, groups:"",artists:JSON.stringify(artistResult), groups:JSON.stringify("[]") }, {layout: "views/templates/layout.hbs"});
    
   } catch (error) {
     console.log(error);
@@ -122,6 +127,8 @@ server.get("/search/:keywords", async function (req, reply) {
 server.get("/groups/:group", async function (req, reply) {
   try {
     setLang(req.query);
+    setMode(req.query);
+
     const collection = loadWorks();
     const result = await collection.find().toArray()
     const artistCollection = loadArtists();
@@ -130,7 +137,7 @@ server.get("/groups/:group", async function (req, reply) {
    // console.log(group);
     const grouplist = await collection.distinct(group);
     
-    return reply.view("views/wall/groups.hbs", { lang: lang, dict:JSON.stringify(lang), title: "grouper", bodyClass: "group"+group, works:JSON.stringify(result), assets:assets,groups:"",artists:JSON.stringify(artistResult), groupsfieldname: group, groups:JSON.stringify(grouplist) }, {layout: "views/templates/layout.hbs"});
+    return reply.view("views/wall/groups.hbs", { lang: lang, dm: dm, dict:JSON.stringify(lang), title: "grouper", bodyClass: "group"+group, works:JSON.stringify(result), assets:assets,groups:"",artists:JSON.stringify(artistResult), groupsfieldname: group, groups:JSON.stringify(grouplist) }, {layout: "views/templates/layout.hbs"});
   } catch (error) {
     console.log(error);
     return "Error Found";
@@ -139,9 +146,11 @@ server.get("/groups/:group", async function (req, reply) {
 server.get("/timeline", async function (req, reply) {
   try {
     setLang(req.query);
+    setMode(req.query);
+
     const collection = loadWorks();
     const result = await collection.find().project({id:1,title:1,date:1}).toArray()
-    return reply.view("views/wall/timeline.hbs", { lang: lang, dict:JSON.stringify(lang), title: "grouper", bodyClass: "group", works:JSON.stringify(result), assets:assets}, {layout: "views/templates/layout.hbs"});
+    return reply.view("views/wall/timeline.hbs", { lang: lang, dm: dm, dict:JSON.stringify(lang), title: "grouper", bodyClass: "group", works:JSON.stringify(result), assets:assets}, {layout: "views/templates/layout.hbs"});
   } catch (error) {
     console.log(error);
     return "Error Found";
@@ -164,6 +173,19 @@ function setLang(r){
       default: lang=lang_en; break;
     }
     console.log('lang'+lang)
+}
+
+function setMode(r){
+  //let dm=;
+  if(r.dm!=undefined) dm=r.dm;
+  else dm=true;
+    //if(lan!=undefined)
+    /*switch(dm) {
+      case "tr": lang=lang_tr; break;
+      case "en": lang=lang_en; break;
+      default: lang=lang_en; break;
+    }*/
+    //console.log('lang'+lang)
 }
 
 function loadWorks(){
