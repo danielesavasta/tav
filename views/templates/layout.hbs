@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{{lang.lang}}}">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
@@ -11,8 +11,8 @@
   </head>
 
   <script>
+    let lang="{{{lang.lang}}}";
     const dict= JSON.parse(`{{{dict}}}`);
-    let lang="en";
     smoothScroll.defaults({duration: 200}); 
     const settings = { 
       exhibitionMode: false, 
@@ -34,9 +34,9 @@
       <nav id="primary-menu">
         <a href="https://taviloglukoleksiyon.org/tk/">{{lang.nav.about}}</a>
         |
-        <a href="/gallery">{{lang.nav.gallery}}</a>
-        <a href="/gallery/artists">{{lang.nav.artists}}</a>
-        <a href="/gallery/type">{{lang.nav.type}}</a>
+        <a class="lin" href="/gallery?lan={{lang.lang}}">{{lang.nav.gallery}}</a>
+        <a class="lin" href="/gallery/artists?lan={{lang.lang}}">{{lang.nav.artists}}</a>
+        <a class="lin" href="/gallery/type?lan={{lang.lang}}">{{lang.nav.type}}</a>
         |
         <a onclick="opensearch()" class="searchButton">{{lang.nav.search}}</a>
         <!--<a href="/timeline">Timeline</a>
@@ -45,12 +45,14 @@
         <a href="/gallery/theme">Theme</a>-->
       </nav>
       <nav id="secondary-menu">
-        <a id="modeButton" onclick="darkmode()"><img src="/assets/darkMode.svg"/></a>
+        <a id="modeButton" onclick="darkmode()">
+          <svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" xml:space="preserve"><path d="M128 10.81c64.025 0 116.005 51.98 116.005 116.005S192.025 242.82 128 242.82 11.995 190.84 11.995 126.815 63.975 10.81 128 10.81ZM56.614 55.386C38.318 73.67 26.995 98.93 26.995 126.815 26.995 182.56 72.254 227.82 128 227.82c27.884 0 53.144-11.323 71.429-29.62L56.614 55.387Z"/></svg>
+        </a>
         <div class="lang">
-          <a href="#" id="lang-toggle" class="lang__option"><img src="/assets/langSwitch.svg"/></a>
+          <a id="lang-toggle" class="lang__option"><svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2"><path d="m108.613 47.315-89.118.002a7.505 7.505 0 0 1-7.5-7.501c0-4.14 3.36-7.5 7.5-7.5h45.844V18.31c0-4.138 3.36-7.5 7.5-7.499a7.503 7.503 0 0 1 7.5 7.5v14.006h45.843a7.5 7.5 0 0 1 5.416 12.687L81.715 97.085l49.72 48.764a7.505 7.505 0 0 1 .103 10.607 7.504 7.504 0 0 1-10.607.103l-49.59-48.64-46.43 48.474a7.503 7.503 0 0 1-10.605.227 7.504 7.504 0 0 1-.227-10.602L60.63 97.414 48.224 85.246a7.504 7.504 0 0 1-.103-10.607 7.502 7.502 0 0 1 10.606-.101l12.28 12.043 37.606-39.266Zm60.743 162.146-10.668 30.692a7.503 7.503 0 0 1-9.546 4.622 7.504 7.504 0 0 1-4.622-9.547l42.45-122.142a7.5 7.5 0 0 1 14.169 0l42.45 122.142a7.501 7.501 0 0 1-4.622 9.546c-3.91 1.36-8.187-.712-9.547-4.622l-10.799-31.074a7.522 7.522 0 0 1-2.58.456h-45.638c-.355 0-.705-.026-1.047-.073Zm44.21-14.928-19.511-56.139-19.51 56.14h39.02Z"/></svg></a>
           <ul class="lang__list">
-            <li><a href="#" class="lang__option" onclick="langSwitch('tr')">tur</a></li>
-            <li><a href="#" class="lang__option" onclick="langSwitch('en')">eng</a></li>
+            <li><a class="lang__option" onclick="langSwitch('tr')">tur</a></li>
+            <li><a class="lang__option" onclick="langSwitch('en')">eng</a></li>
           </ul>
         </div>
         <!-- <a href="/login">login</a> -->
@@ -88,12 +90,13 @@ function darkmode() {
   //var element = document.body;
   document.body.classList.toggle("darkmode");
   const modeButton=document.querySelector("#modeButton");
-  if(document.body.classList.contains("darkmode"))
+  lmodeActive=!lmodeActive;
+ /* if(document.body.classList.contains("darkmode"))
     modeButton.innerHTML="{{lang.nav.lmode}}";
     else
-    modeButton.innerHTML="{{lang.nav.dmode}}";
+    modeButton.innerHTML="{{lang.nav.dmode}}";*/
 }
-
+let lmodeActive=false;
 document.getElementById('lang-toggle').addEventListener('click', function(e){
   e.preventDefault();
   this.parentNode.classList.toggle('is-open');
@@ -111,8 +114,7 @@ searchInput.addEventListener("keypress", function (event) {
     document.getElementById("searchButton").click();
   }
 }); 
-  
-  
+
 function opensearch(){
   document.getElementById("searchbox").style.display = "block";
 }
@@ -122,6 +124,14 @@ function closeSearch() {
   document.getElementById("searchbox").style.display = "none";
 }
 
+function langSwitch(lan){
+  if(lan!=lang) {
+    let url = new URL(window.location.href)
+    url.searchParams.set('lan', lan)
+    window.open(url);
+  }
+    // url.searchParams.set('x', 42);
+}
 </script>
 
   </body>
