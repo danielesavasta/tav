@@ -48,6 +48,8 @@ server.register(dbConnector);
 
 server.get("/", async function (req, reply) {
   try {
+    setLang(req.query);
+
     const collection = loadWorks();
     const result = await collection.aggregate([{ $sample: { size: 1 } }]).toArray()
     const artistCollection = loadArtists();
