@@ -1,6 +1,7 @@
 /*------------------------------------------------------------------------*/
 var db,
   dba,
+  dbaf,
   dbKeysList = [],
   snapshot,
   selectedCol;
@@ -8,7 +9,7 @@ var selector = [];
 const fullDir="/full/";
 const sDir="/thumbs/";
 /*const alphabetTR="abcçdefgğhiıjklmnoöprsştuüvyz"*/
-const alphabetTR="ABCÇDEFGĞHIİJKLMNOÖPRSŞTUÜVYZ";
+const alphabetTR="ABCÇDEFGHIİJKLMNOÖPRSŞTUÜVWYZ";
 
 const metadataCategories = [];
 let foundItemID = 0;
@@ -27,7 +28,7 @@ let scale = 2;
 let _ws = null;
 var selectedID;
 
-function init() {
+/*function init() {
   _ws = new WebSocket(`ws://${window.location.host}/comm`);
   _ws.onmessage = (message) => {
       message = JSON.parse(message.data);
@@ -192,7 +193,14 @@ function emulateImgOver(container, index){
 }
 
 function scrollToLetter(sidebarElement, targetElement) {
-  scrollToElement(sidebarElement, targetElement,true);
+  if(targetElement=="all") {
+    
+    const nothighlightedItems = document.querySelectorAll(sidebarElement+" > div");
+    nothighlightedItems.forEach((userItem) => {
+      userItem.classList.remove("notHigh");
+    });
+  }
+  else scrollToElement(sidebarElement, targetElement,true);
   
 }
 
@@ -228,8 +236,7 @@ function scrollToElement(sidebarElement, targetElement, isLetter) {
       userItem.classList.add("notHigh");
     });
     targetElement.classList.remove("notHigh");
-  }
-  
+  } 
 }
 
 function datatableV() {
@@ -241,7 +248,61 @@ function groupsV() {
 }
 
 function searchV(dbLen) {
-  populateImages(main, db, dba, settings.imageField);
+  /*--------------------- ARTISTS FOUND -------------------------------- */
+  const artistView = createEl(
+    "section",
+    "galleryView",
+    "view viewGroups",
+    "<legend id='ina'>Images not associated<legend>",
+    main
+  ); // Creating the view container
+  /*const galleryView = createEl(
+    "section",
+    "",
+    "",
+    "<legend id='ina'>Images not associated<legend>",
+    main
+  );*/
+  let images = "";
+  let imagesByGroups = {};
+
+  _.forEach(dbaf, function(artista){
+    imagesByGroups[artista.name]=_.filter(db, function(o) { return o.artist_id===artista.id });
+    imagesByGroups[artista.name].id=artista.id;
+    images+=`<section class="groupA"><div class="groupAH"><h3>${artista.name}</h3><h4>${imagesByGroups[artista.name].length}</h4></div>`;
+    console.log("-----------------------------------");
+    console.log(artista.name);
+    console.log("-----------------------------------");
+    _.forEach(imagesByGroups[artista.name], function(work){
+      images += prepareIMG(work._id,"imageThumb",work[imKey]);
+    });
+    images+=`</section>`;
+  });
+  //log("imagesbygroup: "+imagesByGroups)
+  //let alphabetNav=`<div id="alphabetNav"><a onclick='scrollToLetter("#imagesContainer","all")'>#</a>`;
+  //for (i = 0; i < alphabetTR.length; i++) {
+    //let letr=alphabetTR[i];
+    //log(letr);
+    //const authorsInThisGroup=_.filter(imagesByGroups,function(works,artist){ 
+      // if(artist[0] == letr) {
+      //images+=`<section class="groupA g${works.id}"><div class="groupAH"><h3>${artist}</h3><h4>${imagesByGroups[artist].length}</h4></div>`;
+      /*_.forEach(imagesByGroups[artist], function(work){
+        images += prepareIMG(work._id,"imageThumb",work[imKey]);
+      });*/
+      //images+=`</section>`;
+      //return }});
+    //images+=`</div>`;
+    //alphabetNav+= `<a onclick='scrollToLetter("#imagesContainer","#${letr}")'>${letr}</a>`;
+  //}
+  let galleryViewContent='<section id="artworkDescription"></section><div id="imagesSupContainer">';
+  /*if(!settings.exhibitionMode) {
+    galleryViewContent+='<div class="tool"><input onclick="lockClick()" type="checkbox" id="galleryOverUnlocked" name="galleryOverUnlocked"><label for="galleryOverUnlocked">lock item</label> <input type="range" min="5" max="100" value="50" class="linear_slider" id="imgSize"></input></div>';
+  }*/
+  galleryViewContent+=`<div id="imagesArtContainer" >${images}</div></div>`;
+  artistView.innerHTML =galleryViewContent;
+
+  populateImages(document.querySelector("#imagesArtContainer"),galleryView, db, dba, settings.imageField,true);
+
   let imagesContainer=document.querySelector("#imagesContainer");
   if(dbLen<25) {imagesContainer.classList.add("images25")} else
   if(dbLen<50) {imagesContainer.classList.add("images50")} else
@@ -256,7 +317,7 @@ function galleryV() {
     else
       populateImagesInGroups(main, db, dba, groups, settings.imageField, groupsfieldname);
   else
-    populateImages(main, db, dba, settings.imageField);
+    populateImages(main, db, dba, settings.imageField,false);
   //db.sort((a,b) => a.title?.localeCompare(b.title));
   loadRandomCard(db);
 }
@@ -746,7 +807,7 @@ function zoom(event) {
   else root.style.setProperty("--imgThumbScale", "5");
 }
 
-function populateImages(container, database, databasetwo, imKey) {
+function populateImages(container, database, databasetwo, imKey,inContainer) {
   const galleryView = createEl(
     "section",
     "galleryView",
@@ -777,7 +838,8 @@ function populateImages(container, database, databasetwo, imKey) {
     galleryViewContent+='<div class="tool"><input onclick="lockClick()" type="checkbox" id="galleryOverUnlocked" name="galleryOverUnlocked"><label for="galleryOverUnlocked">lock item</label> <input type="range" min="5" max="100" value="50" class="linear_slider" id="imgSize"></input></div>';
   }*/
   galleryViewContent+=`<div id="imagesContainer" >${images}</div></div>`;
-  galleryView.innerHTML =galleryViewContent;
+  if(inContainer) galleryView.innerHTML = images;
+  else galleryView.innerHTML =galleryViewContent;
   containerControl("imagesContainer");
   /*
   imagesContainer.oncontextmenu = imgRightClick;*/
@@ -799,10 +861,10 @@ function imgRelease(event) {
 
 function imgClick(event) {
   let tid=event.target.id;
-  log("mouseup");
+  /*log("mouseup");
   log("mup selectedID: "+selectedID);
   log("thisid: "+tid);
-  if(galleryLock) {
+  */if(galleryLock) {
     if(tid!=selectedID) {
       loadCardinContainer(tid);
       galleryLock=true;
@@ -1021,33 +1083,13 @@ function populateArtists(container, database, databasetwo, imKey) {
 
   let images = "";
   let imagesByGroups = {};
-  //groups = groups.split(",");
-  //imagesByGroups[artista.name].sort(turkcesiralama);
 
   _.forEach(databasetwo, function(artista){
     imagesByGroups[artista.name]=_.filter(database, function(o) { return o.artist_id===artista.id });
     imagesByGroups[artista.name].id=artista.id;
   });
   log("imagesbygroup: "+imagesByGroups)
-  /*
-  let letterOrder="";
-  Object.entries(imagesByGroups).forEach(([key, value]) => {
-    log(key);
-    if(key[0]!=letterOrder) {
-      if(letterOrder!="") images+=`</div>`;
-      letterOrder=key[0];
-      images+=`<div id="${letterOrder}">`;
-    }
-    images+=`<section class="groupA g${imagesByGroups[key].id}"><div class="groupAH"><h3>${key}</h3><h4>${imagesByGroups[key].length}</h4></div>`;
-      let i = 0,
-      len = value.length;
-      while (i < len) {
-          images += prepareIMG(imagesByGroups[key][i]._id,"imageThumb",imagesByGroups[key][i][imKey]);
-          i++;
-      }
-      images+="</section>"
-  })*/
-  let alphabetNav=`<div id="alphabetNav">`;
+  let alphabetNav=`<div id="alphabetNav"><a onclick='scrollToLetter("#imagesContainer","all")'>#</a>`;
   for (i = 0; i < alphabetTR.length; i++) {
     let letr=alphabetTR[i];
     log(letr);
@@ -1060,18 +1102,11 @@ function populateArtists(container, database, databasetwo, imKey) {
       });
       images+=`</section>`;
       return }});
-    //log(authorsInThisGroup);
-    /*_.forEach(authorsInThisGroup, function(works,artista){
-
-    });*/
     images+=`</div>`;
     alphabetNav+= `<a onclick='scrollToLetter("#imagesContainer","#${letr}")'>${letr}</a>`;
   }
 
   let galleryViewContent=`<section id="artworkDescription"></section><div id="imagesSupContainer">`;
-  /*if(!settings.exhibitionMode) {
-    galleryViewContent+='<div class="tool"><input onclick="lockClick()" type="checkbox" id="galleryOverUnlocked" name="galleryOverUnlocked"><label for="galleryOverUnlocked">lock item</label> <input type="range" min="5" max="100" value="50" class="linear_slider" id="imgSize"></input></div>';
-  }*/
   galleryViewContent+=`<div id="imagesContainer">${images}</div></div>${alphabetNav}</div></div>`;
   galleryView.innerHTML =galleryViewContent;
   containerControl("imagesContainer");
@@ -1116,12 +1151,14 @@ function prepareIMG(id, classes, src) {
     '" loading="lazy" decoding="asynchronous" /></figure>');
 }
 
+/*
 function searchNow(){
-  /*let input = document.getElementById("searchKey").value;
+  let input = document.getElementById("searchKey").value;
   if (input != "") {
     log("searchNow: "+input);
-  }*/
+  }
 }
+*/
 
 async function searchButton(){
   let input = document.getElementById("searchKey").value;

@@ -81,11 +81,9 @@ server.get("/gallery/:group", async function (req, reply) {
 });
 server.get("/gallery", async function (req, reply) {
   try {
-    //console.log(req.query.params)
-    //console.log("the selected language is "+ req.query.lan)
     setLang(req.query);
     setMode(req.query);
-    // console.log(lang);
+
     const collection = loadWorks();
     const result = await collection.find().toArray()
     const artistCollection = loadArtists();
@@ -116,7 +114,7 @@ server.get("/search/:keywords", async function (req, reply) {
    // console.log(JSON.stringify(resul))
    // console.log(JSON.stringify(resul2))
     const dbLen=resul.length;
-   return reply.view("views/wall/search.hbs", { lang: lang, dm: dm, dict:JSON.stringify(lang), title: "grouper", keyword:req.params.keywords, dbLength: dbLen, bodyClass: "search", works:JSON.stringify(resul), assets:assets, groups:"",artists:JSON.stringify(artistResult), groups:JSON.stringify("[]") }, {layout: "views/templates/layout.hbs"});
+   return reply.view("views/wall/search.hbs", { lang: lang, dm: dm, dict:JSON.stringify(lang), title: "grouper", keyword:req.params.keywords, dbLength: dbLen, bodyClass: "search", works:JSON.stringify(resul), artistsFound:JSON.stringify(resul2), assets:assets, groups:"",artists:JSON.stringify(artistResult), groups:JSON.stringify("[]") }, {layout: "views/templates/layout.hbs"});
    
   } catch (error) {
     console.log(error);
@@ -134,7 +132,6 @@ server.get("/groups/:group", async function (req, reply) {
     const artistCollection = loadArtists();
     const artistResult = await artistCollection.find().toArray()
     const { group } = req.params;
-   // console.log(group);
     const grouplist = await collection.distinct(group);
     
     return reply.view("views/wall/groups.hbs", { lang: lang, dm: dm, dict:JSON.stringify(lang), title: "grouper", bodyClass: "group"+group, works:JSON.stringify(result), assets:assets,groups:"",artists:JSON.stringify(artistResult), groupsfieldname: group, groups:JSON.stringify(grouplist) }, {layout: "views/templates/layout.hbs"});
@@ -166,7 +163,6 @@ server.ready().then(() => {
 
 function setLang(r){
   let lan=r.lan;
-    //if(lan!=undefined)
     switch(lan) {
       case "tr": lang=lang_tr; break;
       case "en": lang=lang_en; break;
@@ -176,16 +172,8 @@ function setLang(r){
 }
 
 function setMode(r){
-  //let dm=;
   if(r.dm!=undefined) dm=r.dm;
   else dm=true;
-    //if(lan!=undefined)
-    /*switch(dm) {
-      case "tr": lang=lang_tr; break;
-      case "en": lang=lang_en; break;
-      default: lang=lang_en; break;
-    }*/
-    //console.log('lang'+lang)
 }
 
 function loadWorks(){
