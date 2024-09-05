@@ -1,10 +1,10 @@
 /*------------------------------------------------------------------------*/
 var db,
   dba,
-  dbaf,
   dbKeysList = [],
   snapshot,
-  selectedCol;
+  selectedCol,
+  icont;
 var selector = [];
 const fullDir="/full/";
 const sDir="/thumbs/";
@@ -173,7 +173,7 @@ function getAgroup(gees) {
     _.forEach(geesEls, function(g) {g.classList.remove("hover");});
     log(geesId);
     imgOver("",geesId);
-    document.getElementById("imagesContainer").classList.add("hover");
+    document.getElementById(iCont).classList.add("hover");
     geesEl.classList.add("hover");
     
   }
@@ -247,7 +247,7 @@ function groupsV() {
   populateGroups(main, db, dba, groups, settings.imageField, groupsfieldname);
 }
 
-function searchV(dbLen) {
+async function searchV(dbLen) {
   /*--------------------- ARTISTS FOUND -------------------------------- */
   const artistView = createEl(
     "section",
@@ -265,19 +265,26 @@ function searchV(dbLen) {
   );*/
   let images = "";
   let imagesByGroups = {};
+  //log(findWorks)
+  //log(dbLen)
 
-  _.forEach(dbaf, function(artista){
-    imagesByGroups[artista.name]=_.filter(db, function(o) { return o.artist_id===artista.id });
+  _.forEach(findArtists, function(artista){
+   // console.log(findArtists)
+    //console.log(db)
+   // console.log(artista)
+    imagesByGroups[artista.name]=_.filter(findArtistsWorks, function(o) { return o.artist_id===artista.id });
     imagesByGroups[artista.name].id=artista.id;
-    images+=`<section class="groupA"><div class="groupAH"><h3>${artista.name}</h3><h4>${imagesByGroups[artista.name].length}</h4></div>`;
-    console.log("-----------------------------------");
-    console.log(artista.name);
-    console.log("-----------------------------------");
+    images+=`<section class="groupB"><div class="groupAH"><h3>${artista.name}</h3><h4>${imagesByGroups[artista.name].length}</h4></div>`;
+    log("-----------------------------------");
+    log(artista.name);
+    log(artista.id);
+    log("-----------------------------------");
     _.forEach(imagesByGroups[artista.name], function(work){
-      images += prepareIMG(work._id,"imageThumb",work[imKey]);
+      images += prepareIMG(work._id,"imageThumb",work[settings.imageField]);
     });
     images+=`</section>`;
   });
+
   //log("imagesbygroup: "+imagesByGroups)
   //let alphabetNav=`<div id="alphabetNav"><a onclick='scrollToLetter("#imagesContainer","all")'>#</a>`;
   //for (i = 0; i < alphabetTR.length; i++) {
@@ -301,13 +308,16 @@ function searchV(dbLen) {
   galleryViewContent+=`<div id="imagesArtContainer" >${images}</div></div>`;
   artistView.innerHTML =galleryViewContent;
 
-  populateImages(document.querySelector("#imagesArtContainer"),galleryView, db, dba, settings.imageField,true);
+  miniPopulateImages(document.querySelector("#imagesArtContainer"), findWorks, findWorksArtists, settings.imageField);
 
-  let imagesContainer=document.querySelector("#imagesContainer");
+  let imagesContainer=document.querySelector("#imagesArtContainer");
   if(dbLen<25) {imagesContainer.classList.add("images25")} else
   if(dbLen<50) {imagesContainer.classList.add("images50")} else
   if(dbLen<100) {imagesContainer.classList.add("images100")}
-  loadRandomCard(db);
+  iCont="imagesArtContainer";
+  containerControl();
+
+  //loadRandomCard();
 }
 
 function galleryV() {
@@ -321,11 +331,13 @@ function galleryV() {
   //db.sort((a,b) => a.title?.localeCompare(b.title));
   loadRandomCard(db);
 }
+
 function loadRandomCard(db){
-let randomID=Math.floor((Math.random()*db.length)).toString();
-console.log("randomid: "+randomID);
-loadCardinContainer(db[randomID]._id);
+  let randomID=Math.floor((Math.random()*db.length)).toString();
+  console.log("randomid: "+randomID);
+  c(db[randomID]._id);
 }
+
 async function timelineV() {
   //db.sort((a,b) => a.date?.localeCompare(b.date));
   const result = await Object.groupBy(db, ({ date }) => date);
@@ -807,7 +819,7 @@ function zoom(event) {
   else root.style.setProperty("--imgThumbScale", "5");
 }
 
-function populateImages(container, database, databasetwo, imKey,inContainer) {
+function populateImages(container, database, databasetwo, imKey) {
   const galleryView = createEl(
     "section",
     "galleryView",
@@ -838,9 +850,9 @@ function populateImages(container, database, databasetwo, imKey,inContainer) {
     galleryViewContent+='<div class="tool"><input onclick="lockClick()" type="checkbox" id="galleryOverUnlocked" name="galleryOverUnlocked"><label for="galleryOverUnlocked">lock item</label> <input type="range" min="5" max="100" value="50" class="linear_slider" id="imgSize"></input></div>';
   }*/
   galleryViewContent+=`<div id="imagesContainer" >${images}</div></div>`;
-  if(inContainer) galleryView.innerHTML = images;
-  else galleryView.innerHTML =galleryViewContent;
-  containerControl("imagesContainer");
+  galleryView.innerHTML =galleryViewContent;
+  iCont="imagesContainer";
+  containerControl();
   /*
   imagesContainer.oncontextmenu = imgRightClick;*/
 /*
@@ -851,6 +863,42 @@ function populateImages(container, database, databasetwo, imKey,inContainer) {
     scale = this.value * 0.015;
     imagesContainer.style.fontSize = scale + "em";
   };*/
+}
+
+async function miniPopulateImages(container, database, databasetwo, imKey) {
+  const galleryView = createEl(
+    "section",
+    "searchGallery",
+    "groupB",
+    "<legend id='ina'>Images not associated<legend>",
+    container
+  ); // Creating the view container
+
+  let images = "";
+  log("dblength: "+database.length);
+  let i = 0, len = database.length;
+  //if(database[i][imKey].length)
+  while (i < len) {
+    if(settings.imageArray) {
+    let j = 0,
+      lenj = database[i][imKey].length;
+    while (j < lenj) {
+      images += prepareIMG(database[i]._id,"imageThumb",database[i][imKey][j]);
+      j++;
+    }}
+    else {
+      images += prepareIMG(database[i]._id,"imageThumb",database[i][imKey]);
+    }
+    i++;
+  }
+  //let galleryViewContent='<section id="artworkDescription"></section><div id="imagesSupContainer">';
+  /*if(!settings.exhibitionMode) {
+    galleryViewContent+='<div class="tool"><input onclick="lockClick()" type="checkbox" id="galleryOverUnlocked" name="galleryOverUnlocked"><label for="galleryOverUnlocked">lock item</label> <input type="range" min="5" max="100" value="50" class="linear_slider" id="imgSize"></input></div>';
+  }*/
+  //let galleryViewContent=`<div id="imagesContainer" >${images}</div>`;
+  galleryView.innerHTML = images;
+
+//  containerControl("imagesContainer");
 }
 
 function imgRelease(event) {
@@ -866,7 +914,7 @@ function imgClick(event) {
   log("thisid: "+tid);
   */if(galleryLock) {
     if(tid!=selectedID) {
-      loadCardinContainer(tid);
+      loadCardinContainer(tid,iCont);
       galleryLock=true;
     } else galleryLock=false;
   } else galleryLock=true;
@@ -881,34 +929,36 @@ function imgOver(event,id) {
       //log(event.target)
     }
     let idv = id;
-    if (idv != "imagesContainer" && idv.length > 2) {
-      loadCardinContainer(idv);
+    if (idv != iCont && idv.length > 2) {
+      loadCardinContainer(idv,iCont);
     }
   }
 }
 
-function loadCardinContainer(id){
+function loadCardinContainer(id,iC){
   imKey = settings.imageField;
   imKey = imKey.toString();
-  //log("loadCardinContainer: "+id);
+  log("loadCardinContainerdb: "+db.toString());
+  log("loadCardinContainerdb: "+dba.toString());
+  log("loadCardinContainer: "+id);
   let container = document.getElementById("artworkDescription");
 
   foundItemID = db.findIndex((item) => item._id == id);
-  //log("foundItemID: "+foundItemID);
+  log("foundItemID: "+foundItemID);
   let foundItem=db[foundItemID];
-  //log("foundItem: "+foundItem);
+  log("foundItem: "+foundItem);
   let foundArtistID=dba.findIndex((item) => item.id == foundItem.artist_id);
   let foundArtist=dba[foundArtistID];
   selectedID=id;
-  const imgContainer=document.getElementById("imagesContainer");
+  const imgContainer=document.getElementById(iC);
   
   _.forEach(imgContainer.getElementsByTagName('figure'), function(g) {g.classList.remove("highlight");});
   document.getElementById(selectedID).parentNode.classList.add("highlight");
   container.innerHTML = returnCardContent(foundItem,foundArtist);
 }
 
-function containerControl(elemen){
-  let imagesContainer = document.getElementById(elemen);
+function containerControl(){
+  let imagesContainer = document.getElementById(iCont);
   //log(imagesContainer);
   imagesContainer.onmouseover = imgOver;
   //imagesContainer.onmousedown = imgRelease;
@@ -974,7 +1024,8 @@ function populateGroups(container, database, databasetwo, groups, imKey, fieldna
   }*/
   galleryViewContent+=`<div id="imagesContainer" >${images}</div></div>`;
   galleryView.innerHTML =galleryViewContent;
-  containerControl("imagesContainer");
+  iCont="imagesContainer"
+  containerControl();
 }
 
 function hideOthersThumbs(thisClass){
@@ -1069,7 +1120,8 @@ function populateImagesInGroups(container, database, databasetwo, groups, imKey,
   }*/
   galleryViewContent+=`<div id="imagesContainer">${images}</div></div>`;
   galleryView.innerHTML =galleryViewContent;
-  containerControl("imagesContainer");
+  iCont="imagesContainer";
+  containerControl();
 }
 
 function populateArtists(container, database, databasetwo, imKey) {
@@ -1109,7 +1161,8 @@ function populateArtists(container, database, databasetwo, imKey) {
   let galleryViewContent=`<section id="artworkDescription"></section><div id="imagesSupContainer">`;
   galleryViewContent+=`<div id="imagesContainer">${images}</div></div>${alphabetNav}</div></div>`;
   galleryView.innerHTML =galleryViewContent;
-  containerControl("imagesContainer");
+  iCont="imagesContainer"
+  containerControl();
 }
 
 function populateTimeline(container, database, imKey) {
@@ -1136,7 +1189,8 @@ function populateTimeline(container, database, imKey) {
   }*/
   galleryViewContent+=`<div id="timelineContainer">${images}</div></div>`;
   galleryView.innerHTML =galleryViewContent;
-  containerControl("timelineContainer");
+  iCont="timelineContainer";
+  containerControl();
 }
 
 function prepareIMG(id, classes, src) {
@@ -1211,7 +1265,7 @@ function datatableFilter(found) {
     tb = document.getElementById("tblBody").children;
   } else {
     log("thats a gallery");
-    tb = document.getElementById("imagesContainer").children;
+    tb = document.getElementById(iCont).children;
   }
 
   for (let i = 0; i < tb.length; i++) {

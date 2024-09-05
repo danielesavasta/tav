@@ -107,14 +107,25 @@ server.get("/search/:keywords", async function (req, reply) {
 
     const collection = loadWorks();
     const artistCollection = loadArtists();
-    const resul= await collection.find(wQuery).toArray()
-    const resul2= await artistCollection.find(aQuery).toArray()
-    const artistResult = await artistCollection.find().toArray()
+    //const resul= await collection.find(wQuery).toArray()
+    const findWorks= await collection.find(wQuery).toArray()
+    let artistsWorkId=[];
+    findWorks.forEach(result => {artistsWorkId.push(result.artist_id)});
+    const findWorksArtists= await artistCollection.find({ $or: [{ id: { "$in":artistsWorkId }}]}).toArray()
+
+    const findArtists= await artistCollection.find(aQuery).toArray()
     
-   // console.log(JSON.stringify(resul))
-   // console.log(JSON.stringify(resul2))
-    const dbLen=resul.length;
-   return reply.view("views/wall/search.hbs", { lang: lang, dm: dm, dict:JSON.stringify(lang), title: "grouper", keyword:req.params.keywords, dbLength: dbLen, bodyClass: "search", works:JSON.stringify(resul), artistsFound:JSON.stringify(resul2), assets:assets, groups:"",artists:JSON.stringify(artistResult), groups:JSON.stringify("[]") }, {layout: "views/templates/layout.hbs"});
+    let artistsArrayId=[];
+    findArtists.forEach(result => {artistsArrayId.push(result.id)});
+    const findArtistsWorks= await collection.find({ $or: [{ artist_id: { "$in":artistsArrayId }}]}).toArray()
+
+    //const artistResult = await artistCollection.find().toArray()
+    return reply.view("views/wall/search.hbs", { lang: lang, dm: dm, dict:JSON.stringify(lang), title: "grouper", keyword:req.params.keywords, bodyClass: "search",
+    works:JSON.stringify(findWorks), 
+    worksArtists:JSON.stringify(findWorksArtists), 
+    artists:JSON.stringify(findArtists),
+    artistsWorks:JSON.stringify(findArtistsWorks),
+    assets:assets, groups:"", groups:JSON.stringify("[]") }, {layout: "views/templates/layout.hbs"});
    
   } catch (error) {
     console.log(error);

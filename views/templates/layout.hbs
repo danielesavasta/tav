@@ -129,6 +129,7 @@ searchInput.addEventListener("keypress", function (event) {
 
 function opensearch(){
   document.getElementById("searchbox").style.display = "block";
+  _.forEach(document.querySelectorAll('figure'), function(g) {g.classList.remove("highlight");});
 }
 
 // Close the full screen search box

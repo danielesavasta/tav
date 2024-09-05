@@ -1,17 +1,25 @@
 <main>
-<div id="searchTitle">{{lang.search.[0]}}<h1>{{{ keyword }}}</h1>{{lang.search.[1]}}{{{dbLength}}}{{lang.search.[2]}}</div>
+<div id="searchTitle">{{lang.search.[0]}}<h1>{{{ keyword }}}</h1>{{lang.search.[1]}}<span id="searchCount"></span>{{lang.search.[2]}}</div>
 </main>
 
 <script src="/js/lib/lodash.min.js"></script>
 <script src="/js/grouper_core.js"></script>
 <script>
   async function start() { 
-  db={{{works}}}; 
-  dba={{{artists}}};
-  dbaf={{{artistsFound}}};
-  groupsfieldname="{{groupsfieldname}}"; 
-  groups={{{groups}}}; 
-  searchV( {{{dbLength}}} ); 
+  findWorks={{{works}}}; 
+  findWorksArtists={{{worksArtists}}};
+  findArtists={{{artists}}};
+  findArtistsWorks={{{artistsWorks}}};
+  groupsfieldname="{{groupsfieldname}}";
+  //db=findWorks+findArtistsWorks;
+  db = [...findWorks, ...findArtistsWorks];
+  dba = [...findArtists, ...findWorksArtists];
+  log(db)
+  log(dba)
+  groups={{{groups}}};
+  dbLen=findWorks.length+findArtists.length;
+  document.querySelector("#searchCount").innerHTML=dbLen;
+  searchV(dbLen);
   }
   start();
 </script>
