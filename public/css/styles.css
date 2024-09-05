@@ -253,6 +253,14 @@ main {
   margin-top: 10em;
   height:200vh*/
 }
+#imagesArtContainer {
+  display: flex;
+  flex-flow: wrap;
+  height: var(--main);
+  overflow-y: scroll;
+padding: 5em;
+align-content: flex-start;
+}
 .notHigh {
   opacity: .4;
 }
