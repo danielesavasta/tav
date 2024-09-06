@@ -107,8 +107,6 @@ function darkmode(setp=false) {
 }
 darkmode(true);
 
-
-
 document.getElementById('lang-toggle').addEventListener('click', function(e){
   e.preventDefault();
   this.parentNode.classList.toggle('is-open');
@@ -129,6 +127,7 @@ searchInput.addEventListener("keypress", function (event) {
 
 function opensearch(){
   document.getElementById("searchbox").style.display = "block";
+  document.getElementById("searchKey").focus();
   _.forEach(document.querySelectorAll('figure'), function(g) {g.classList.remove("highlight");});
 }
 
@@ -143,7 +142,6 @@ function langSwitch(lan){
     url.searchParams.set('lan', lan)
     window.open(url);
   }
-    // url.searchParams.set('x', 42);
 }
 </script>
 

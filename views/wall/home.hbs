@@ -2,27 +2,16 @@
     <div id="shownwork"></div>
     <blockquote>‘{{lang.quote}}’</blockquote>
     </main>
-
-<!--<script src="/js/lib/lodash.min.js"></script>
-<script src="/js/grouper_core.js"></script>-->
+<script src="/js/lib/lodash.min.js"></script>
+<script src="/js/grouper_core.js"></script>
 <script>
     async function start() { 
         const work={{{work}}}[0];
         const artist={{{artist}}};
         const assets="{{{assets}}}";
-  /*
-  db={{{works}}}; 
-  dba={{{artists}}};
-  groupsfieldname="{{groupsfieldname}}"; 
-  groups={{{groups}}}; 
-  galleryV(); 
-  randomBG();
-  */
-    
+
     const shownwork=document.querySelector("#shownwork");
     const url=`url("${assets}/full/${work.id}.webp`;
-    //console.log(work);
-    //console.log(artist);
     bg.style.backgroundImage=url;
     let title=((lang=="tr") ? work.title_tr : (work.title_en==undefined) ? work.title_tr : work.title_en);
     shownwork.innerHTML=`<a href="/work/${work.id}"><h2>${title}</h2><p>${artist.name}</p></a>`;

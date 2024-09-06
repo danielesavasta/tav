@@ -200,7 +200,7 @@ let text = searchText;
 // Replace special characters
 text = text.replace(/[-\/\\^$*+?.()|[\]{}]/g, "");
 let array = text.split("");
-let newArray = array.map((char: any) => {
+let newArray = array.map((char) => {
   if (char === "i" ||char === "I" ||    char === "ı" || char === "İ" || char === "İ") {
     char = "(ı|i|İ|I|İ)";
     return char;
