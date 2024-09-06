@@ -100,8 +100,8 @@ server.get("/search/:keywords", async function (req, reply) {
   try {
     setLang(req.query);
     setMode(req.query);
-
-    const regex = new RegExp(req.params.keywords, 'i');
+    let text=searchTurkishCharacters(req.params.keywords);
+    const regex = new RegExp(text, 'i');
     let wQuery = { $or: [{ title_en: regex }, { title_tr: regex }, { label_en: regex }, { label_tr: regex }] };
     let aQuery = { $or: [{ name: regex }] };
 
@@ -193,4 +193,38 @@ function loadWorks(){
 
 function loadArtists(){
   return server.mongo.db.collection(dbArtists);
+}
+
+function searchTurkishCharacters(searchText){
+let text = searchText;
+// Replace special characters
+text = text.replace(/[-\/\\^$*+?.()|[\]{}]/g, "");
+let array = text.split("");
+let newArray = array.map((char: any) => {
+  if (char === "i" ||char === "I" ||    char === "ı" || char === "İ" || char === "İ") {
+    char = "(ı|i|İ|I|İ)";
+    return char;
+  } else if (char === "g" || char === "G" || char === "ğ" || char === "Ğ") {
+    char = "(ğ|g|Ğ|G)";
+    return char;
+  } else if (char === "u" || char === "U" || char === "ü" || char === "Ü") {
+    char = "(ü|u|Ü|U)";
+    return char;
+  } else if (char === "s" || char === "S" || char === "ş" || char === "Ş") {
+    char = "(ş|s|Ş|S)";
+    return char;
+  } else if (char === "o" || char === "O" || char === "ö" || char === "Ö") {
+    char = "(ö|o|Ö|O)";
+    return char;
+  } else if (char === "c" || char === "C" || char === "ç" || char === "Ç") {
+    char = "(ç|c|Ç|C)";
+    return char;
+  } else {
+    return char;
+  }
+});
+
+// Array values are joined with no spaces
+text = newArray.join("");
+return text;
 }

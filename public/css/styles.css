@@ -890,14 +890,12 @@ time[aria-label="Date"]{
 }
 #objectData h4 {
   margin-left: calc(33% + .9em);
-  text-transform: lowercase;
-  font-variant: small-caps;
+  font-variant: all-small-caps;
 }
 #objectData dt {
   width: 33%;
   opacity: 0.6;
-  text-transform: lowercase;
-  font-variant: small-caps;
+  font-variant: all-small-caps;
   text-align: right;
   font-size: .9em;
 }
@@ -1092,8 +1090,7 @@ footer dl dt{
 }
 
 span[aria-label="Nationality"] {
-  text-transform: lowercase;
-  font-variant: small-caps;
+  font-variant: all-small-caps;
 }
 
 time {
