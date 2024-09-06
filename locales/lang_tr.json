@@ -10,7 +10,7 @@
     "dmode": "Dark Mode"
     },
   
-  "card":["Kimlik","Envanter numarası","Başlık (tr)","Başlık (en)","Tür","Tarih","Yaratıcı","Sanatçı","Milliyet","Yaşam","Fiziksel Özellikler","Malzemeler","Teknikler","Boyutlar","Konu","Tema","Etiket (tr)","Etiket (en)","Edinme","Köken","Tarih","Dönem","Etkinlikler","Tema","Gösterimde"],
+  "card":["Kİmlİk","Envanter numarası","Başlık (tr)","Başlık (en)","Tür","Tarih","Yaratıcı","Sanatçı","Milliyet","Yaşam","Fiziksel Özellikler","Malzemeler","Teknikler","Boyutlar","Konu","Tema","Etiket (tr)","Etiket (en)","Edinme","Köken","Tarih","Dönem","Etkinlikler","Tema","Gösterimde"],
   "themes":["Doğa","Şekil","Kavramsal","Şehir","Mimari","Nesne","Natürmort","Soyut","Tipografik"],
   "birthplace": ["Almanya","ABD","Arjantin","Avustralya","Avusturya","Bangladeş","Belarus","Belçika","Bilinmiyor","Bulgaristan","Çin","Danimarka","Mısır","Fransa","Galler","Güney Kore","Hırvatistan","Hollanda","İngiltere","İran","İrlanda","İspanya","İspanya","İsveç","İsviçre","İtalya","Japonya","Kanada","Karadağ","Kore","Küba","Lübnan","Macaristan","Kuzey Makedonya","Malta","Meksika","Nahçıvan","Nikaragua","Peru","Polonya","Porugal","Romanya","Rusya","Slovenya","Tayvan","Osmanlı Trablusgarp","Türkiye","Ukrayna","Yunanistan"],
   "type": ["","Baskı","Çizim","Dijital Sanat","Fotoğraf","Kaligrafi","Heykel","Karma Medya","Resim","Video","Enstalasyon"],
