@@ -4,7 +4,7 @@ var db,
   dbKeysList = [],
   snapshot,
   selectedCol,
-  icont;
+  iCont;
 var selector = [];
 const fullDir="/full/";
 const sDir="/thumbs/";
@@ -334,8 +334,8 @@ function galleryV() {
 
 function loadRandomCard(db){
   let randomID=Math.floor((Math.random()*db.length)).toString();
-  console.log("randomid: "+randomID);
-  c(db[randomID]._id);
+  log("randomid: "+randomID);
+  emulateImgOver(iCont, db[randomID]._id);
 }
 
 async function timelineV() {
