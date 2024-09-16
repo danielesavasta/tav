@@ -336,7 +336,7 @@ function loadRandomCard(db){
   let randomID=Math.floor((Math.random()*db.length)).toString();
   console.log("randomid: "+randomID);
   console.log("_id: "+db[randomID]._id);
-  loadCardinContainer(iCont, db[randomID]._id);
+  loadCardinContainer(db[randomID]._id,iCont);
   //gotoid(iCont, db[randomID]._id);
 }
 
