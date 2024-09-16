@@ -334,7 +334,8 @@ function galleryV() {
 
 function loadRandomCard(db){
   let randomID=Math.floor((Math.random()*db.length)).toString();
-  log("randomid: "+randomID);
+  console.log("randomid: "+randomID);
+  console.log("_id: "+db[randomID]._id);
   gotoid(iCont, db[randomID]._id);
 }
 

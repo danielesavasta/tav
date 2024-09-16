@@ -92,6 +92,7 @@
 <script>
   if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
     document.querySelector("body").innerHTML=`<a id="logo" href="https://taviloglukoleksiyon.org/"><span>{{{lang.tav}}}</span></a><h1>Unfortunately, this app does not support mobile devices. <br>Please try again on a bigger screen.</h1>`
+    document.querySelector("body").classList.add("mobileStop");
   } else console.log("not mobile")
 
 function darkmode(setp=false) {

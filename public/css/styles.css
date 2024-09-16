@@ -1096,3 +1096,10 @@ span[aria-label="Nationality"] {
 time {
   font-variant-numeric: oldstyle-nums;
 }
+.mobileStop {
+  padding:1em;
+}
+.mobileStop #logo{
+  display: block;
+  margin-bottom: 3em;
+}
