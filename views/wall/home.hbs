@@ -27,6 +27,9 @@ const bg=document.querySelector("#splashscreen");
     bg.style.backgroundPosition=position;
 
 });
-  start();
+  if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+    document.querySelector("#splashscreen").innerHTML="Unfortunately, this app does not support mobile devices. Please try again on a bigger screen."
+    }
+  else  start();
 
 </script>
