@@ -336,7 +336,8 @@ function loadRandomCard(db){
   let randomID=Math.floor((Math.random()*db.length)).toString();
   console.log("randomid: "+randomID);
   console.log("_id: "+db[randomID]._id);
-  gotoid(iCont, randomID);
+  loadCardinContainer(iCont, db[randomID]._id);
+  //gotoid(iCont, db[randomID]._id);
 }
 
 async function timelineV() {
