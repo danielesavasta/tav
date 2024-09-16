@@ -146,8 +146,8 @@ function selectArtist(artist) {
 }
 
 function gotoid(index) {
-  const cont=document.querySelector("#imagesContainer");
-  emulateImgOver(cont,index);
+  //const cont=document.querySelector("#imagesContainer");
+  emulateImgOver(iCont,index);
 }
 
 function getAgroup(gees) {
