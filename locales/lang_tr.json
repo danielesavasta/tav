@@ -1,10 +1,13 @@
 { "lang": "tr",
   "tav":"Taviloğlu Koleksiyon",
+  "quote":"1972 yılında ilk kez resim satın almaya başladığımda bir koleksiyon yapmaya başladığımı bilmiyordum...",
+  "search":[""," araması"," sonuç üretti."],
   "nav":{
     "about": "Koleksiyon ana sayfa",
     "gallery": "Galeri",
     "artists": "Sanatçılar",
     "type": "Tür",
+    "location": "Konum",
     "search": "Arama",
     "lmode": "Light Mode",
     "dmode": "Dark Mode"
@@ -15,6 +18,6 @@
   "birthplace": ["Almanya","ABD","Arjantin","Avustralya","Avusturya","Bangladeş","Belarus","Belçika","Bilinmiyor","Bulgaristan","Çin","Danimarka","Mısır","Fransa","Galler","Güney Kore","Hırvatistan","Hollanda","İngiltere","İran","İrlanda","İspanya","İspanya","İsveç","İsviçre","İtalya","Japonya","Kanada","Karadağ","Kore","Küba","Lübnan","Macaristan","Kuzey Makedonya","Malta","Meksika","Nahçıvan","Nikaragua","Peru","Polonya","Porugal","Romanya","Rusya","Slovenya","Tayvan","Osmanlı Trablusgarp","Türkiye","Ukrayna","Yunanistan"],
   "type": ["","Baskı","Çizim","Dijital Sanat","Fotoğraf","Kaligrafi","Heykel","Karma Medya","Resim","Video","Enstalasyon"],
   "extheme": ["","Doğa","Şekiller","Şehirler","Soyut"],
-  "exhall": ["","Feshane","Gazhane","Haliç Tersane","İrhm Gss","İş Bankası","Likör Fb."],
+  "exhall": ["","ArtIstanbul Feshane","Gazhane","Haliç Tersane","İrhm Gss","İş Bankası","Mecidiyeköy Likör Fabrikası"],
   "period": ["1972-1982","1983-1992","1993-2002","2003-2012","2013-2024"]
 }

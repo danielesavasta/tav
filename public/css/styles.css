@@ -1103,3 +1103,13 @@ time {
   display: block;
   margin-bottom: 3em;
 }
+.exhall .groupS{
+  width:100%;
+}
+.exhall .g4,.exhall .g5{
+  width:50%;
+}
+
+.exhall .g0{
+  display: none;
+}

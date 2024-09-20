@@ -73,7 +73,7 @@ server.get("/gallery/:group", async function (req, reply) {
     const { group } = req.params;
     console.log(group);
     const grouplist = await collection.distinct(group);
-    return reply.view("views/wall/index.hbs", { lang: lang, dm: dm, dict:JSON.stringify(lang),  title: "grouper", bodyClass: "galleryGroup"+group, works:JSON.stringify(result), assets:assets, groups:"",artists:JSON.stringify(artistResult), groupsfieldname: group, groups:JSON.stringify(grouplist) }, {layout: "views/templates/layout.hbs"});
+    return reply.view("views/wall/index.hbs", { lang: lang, dm: dm, dict:JSON.stringify(lang),  title: "grouper", bodyClass: "galleryGroup "+group, works:JSON.stringify(result), assets:assets, groups:"",artists:JSON.stringify(artistResult), groupsfieldname: group, groups:JSON.stringify(grouplist) }, {layout: "views/templates/layout.hbs"});
   } catch (error) {
     console.log(error);
     return "Error Found";
